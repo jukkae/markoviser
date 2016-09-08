@@ -28,5 +28,16 @@ void mouseClicked() {
 }
 
 void oscEvent(OscMessage message) {
+  for(int i = 0; i < message.arguments().length; i++) {
+    if(message.arguments()[i].equals("getnext")){
+      int next = markov.getNext();
+      sendInt(next);
+    }
+  }
   println(message.arguments());
+}
+
+void sendInt(int i) {
+  println("sending int: " + i);
+  oscP5.send(new OscMessage("/state " + i), puredata);
 }
