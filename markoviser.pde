@@ -28,7 +28,5 @@ void mouseClicked() {
 }
 
 void oscEvent(OscMessage message) {
-  print("### received an osc message.");
-  print(" addrpattern: "+message.addrPattern());
-  println(" typetag: "+message.typetag());
+  println(message.arguments());
 }
