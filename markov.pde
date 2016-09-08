@@ -2,19 +2,35 @@ class Markov {
   int state = 0;
   int previousState = 0;
   //TODO proper matrix implementation
-  int[] states = { 0, 1, 2, 3 };
+  int[] states = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
   double[][] probabilities = {
-                               {0.3, 0.3, 0.3, 0.1},
-                               {0.3, 0.3, 0.3, 0.1},
-                               {0.3, 0.3, 0.3, 0.1},
-                               {0.1, 0.1, 0.1, 0.7}
+                               {30, 5, 10, 30, 5, 30, 10, 30, 10, 5, 10, 5},
+                               {30, 5, 10, 30, 5, 30, 10, 30, 10, 5, 10, 5},
+                               {30, 5, 10, 30, 5, 30, 10, 30, 10, 5, 10, 5},
+                               {30, 5, 10, 30, 5, 30, 10, 30, 10, 5, 10, 5},
+                               {30, 5, 10, 30, 5, 30, 10, 30, 10, 5, 10, 5},
+                               {30, 5, 10, 30, 5, 30, 10, 30, 10, 5, 10, 5},
+                               {30, 5, 10, 30, 5, 30, 10, 30, 10, 5, 10, 5},
+                               {30, 5, 10, 30, 5, 30, 10, 30, 10, 5, 10, 5},
+                               {30, 5, 10, 30, 5, 30, 10, 30, 10, 5, 10, 5},
+                               {30, 5, 10, 30, 5, 30, 10, 30, 10, 5, 10, 5},
+                               {30, 5, 10, 30, 5, 30, 10, 30, 10, 5, 10, 5},
+                               {30, 5, 10, 30, 5, 30, 10, 30, 10, 5, 10, 5}
                              };
   
   EnumeratedIntegerDistribution[] distributions = {
     new EnumeratedIntegerDistribution(states, probabilities[0]),
     new EnumeratedIntegerDistribution(states, probabilities[1]),
     new EnumeratedIntegerDistribution(states, probabilities[2]),
-    new EnumeratedIntegerDistribution(states, probabilities[3])
+    new EnumeratedIntegerDistribution(states, probabilities[3]),
+    new EnumeratedIntegerDistribution(states, probabilities[4]),
+    new EnumeratedIntegerDistribution(states, probabilities[5]),
+    new EnumeratedIntegerDistribution(states, probabilities[6]),
+    new EnumeratedIntegerDistribution(states, probabilities[7]),
+    new EnumeratedIntegerDistribution(states, probabilities[8]),
+    new EnumeratedIntegerDistribution(states, probabilities[9]),
+    new EnumeratedIntegerDistribution(states, probabilities[10]),
+    new EnumeratedIntegerDistribution(states, probabilities[11])
   };
   
   Markov() {

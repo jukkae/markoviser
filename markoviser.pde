@@ -10,7 +10,7 @@ NetAddress puredata;
 Markov markov;
 
 void setup() {
-  size(640, 480);
+  size(320, 240);
   
   oscP5 = new OscP5(this, 12000);
   
@@ -20,11 +20,10 @@ void setup() {
 
 void draw() {
   background(0);
-  rect(mouseX, mouseY, 20, 20);
 }
 
 void mouseClicked() {
-  oscP5.send(new OscMessage("/state " + markov.getState()), puredata);
+  oscP5.send(new OscMessage("/state").add(markov.getState()), puredata);
 }
 
 void oscEvent(OscMessage message) {
