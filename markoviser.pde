@@ -29,7 +29,7 @@ void mouseClicked() {
 void oscEvent(OscMessage message) {
   println(message.arguments());
   for(int i = 0; i < message.arguments().length; i++) {
-    if(message.arguments()[i].equals("getnext")){
+    if(message.arguments()[i].equals("getnextnote")){
       int next = markov.getNextNote();
       sendInt(next);
     }
