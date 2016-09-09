@@ -30,7 +30,7 @@ void oscEvent(OscMessage message) {
   println(message.arguments());
   for(int i = 0; i < message.arguments().length; i++) {
     if(message.arguments()[i].equals("getnext")){
-      int next = markov.getNext();
+      int next = markov.getNextNote();
       sendInt(next);
     }
   }

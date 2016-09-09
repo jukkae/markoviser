@@ -28,32 +28,32 @@ class Markov {
                                               {0, 1, 0, 1, 0}, //A <- A
                                               {1, 0, 0, 0, 0}, //A <- C
                                               {1, 0, 0, 0, 0}, //A <- D
-                                              {1, 0, 0, 0, 0}, //A <- E
-                                              {1, 0, 0, 0, 0}  //A <- F
+                                              {1, 0, 0, 0, 1}, //A <- E
+                                              {1, 0, 0, 1, 0}  //A <- F
                                             }, {  
-                                              {1, 0, 1, 0, 0}, //C <- A
+                                              {1, 0, 2, 0, 0}, //C <- A
                                               {1, 0, 0, 0, 0}, //C <- C
-                                              {1, 0, 0, 0, 0}, //C <- D
+                                              {2, 0, 0, 1, 0}, //C <- D
                                               {1, 0, 0, 0, 0}, //C <- E
                                               {1, 0, 0, 0, 0}  //C <- F
                                             }, {
                                               {1, 0, 0, 0, 0}, //D <- A
-                                              {0, 0, 1, 3, 0}, //D <- C
-                                              {1, 0, 0, 0, 0}, //D <- D
-                                              {1, 0, 0, 0, 0}, //D <- E
+                                              {0, 1, 1, 3, 0}, //D <- C
+                                              {1, 1, 0, 0, 1}, //D <- D
+                                              {0, 1, 0, 0, 0}, //D <- E
                                               {1, 0, 0, 0, 0}  //D <- F
                                             }, {
                                               {1, 0, 0, 1, 1}, //E <- A
                                               {1, 0, 0, 0, 0}, //E <- C
-                                              {1, 0, 0, 0, 1}, //E <- D
-                                              {1, 0, 0, 0, 0}, //E <- E
-                                              {1, 0, 0, 0, 2}  //E <- F
+                                              {0, 0, 1, 0, 1}, //E <- D
+                                              {1, 0, 1, 0, 1}, //E <- E
+                                              {2, 1, 0, 0, 4}  //E <- F
                                             }, {
                                               {0, 0, 0, 1, 0}, //F <- A
                                               {0, 1, 0, 0, 0}, //F <- C
                                               {0, 1, 0, 1, 0}, //F <- D
-                                              {0, 0, 0, 1, 0}, //F <- E
-                                              {0, 0, 0, 1, 1}  //F <- F
+                                              {0, 0, 0, 1, 1}, //F <- E
+                                              {0, 0, 0, 1, 0}  //F <- F
                                             }
                                           };
   
@@ -86,19 +86,19 @@ class Markov {
     return state;
   }
   
-  int getNext() {
+  int getNextNote() {
     switch (order) {
       case FIRST:
-        return getNextFirstOrder();
+        return getNextFirstOrderNote();
       case SECOND:
-        return getNextSecondOrder();
+        return getNextSecondOrderNote();
       default:
         return state;
     }
     
   }
   
-  private int getNextFirstOrder() {
+  private int getNextFirstOrderNote() {
     previousState = state;
     int s = firstOrderDistributions[state].sample();
     state = s;
@@ -108,7 +108,7 @@ class Markov {
   }
   
   //TODO ughh
-  private int getNextSecondOrder() {
+  private int getNextSecondOrderNote() {
     int i = 0;
     switch(previousState) {
       case 0: i = 0; break;
