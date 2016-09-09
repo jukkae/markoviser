@@ -24,26 +24,36 @@ class Markov {
                                        };
                              
   double[][][] secondOrderProbabilities = {
-                                            {               //cur  last
-                                              {0, 1, 1, 1}, //A <- A
-                                              {1, 0, 0, 0}, //A <- C
-                                              {1, 0, 0, 0}, //A <- D
-                                              {1, 0, 0, 0}  //A <- E
+                                            {//A  C  D  E  F  cur  last
+                                              {0, 1, 0, 1, 0}, //A <- A
+                                              {1, 0, 0, 0, 0}, //A <- C
+                                              {1, 0, 0, 0, 0}, //A <- D
+                                              {1, 0, 0, 0, 0}, //A <- E
+                                              {1, 0, 0, 0, 0}  //A <- F
                                             }, {  
-                                              {1, 0, 0, 0}, //C <- A
-                                              {1, 0, 0, 0}, //C <- C
-                                              {1, 0, 0, 0}, //C <- D
-                                              {1, 0, 0, 0}  //C <- E
+                                              {1, 0, 1, 0, 0}, //C <- A
+                                              {1, 0, 0, 0, 0}, //C <- C
+                                              {1, 0, 0, 0, 0}, //C <- D
+                                              {1, 0, 0, 0, 0}, //C <- E
+                                              {1, 0, 0, 0, 0}  //C <- F
                                             }, {
-                                              {1, 0, 0, 0}, //D <- A
-                                              {1, 0, 0, 0}, //D <- C
-                                              {1, 0, 0, 0}, //D <- D
-                                              {1, 0, 0, 0}  //D <- E
+                                              {1, 0, 0, 0, 0}, //D <- A
+                                              {0, 0, 1, 3, 0}, //D <- C
+                                              {1, 0, 0, 0, 0}, //D <- D
+                                              {1, 0, 0, 0, 0}, //D <- E
+                                              {1, 0, 0, 0, 0}  //D <- F
                                             }, {
-                                              {1, 0, 0, 0}, //E <- A
-                                              {1, 0, 0, 0}, //E <- C
-                                              {1, 0, 0, 0}, //E <- D
-                                              {1, 0, 0, 0}  //E <- E
+                                              {1, 0, 0, 1, 1}, //E <- A
+                                              {1, 0, 0, 0, 0}, //E <- C
+                                              {1, 0, 0, 0, 1}, //E <- D
+                                              {1, 0, 0, 0, 0}, //E <- E
+                                              {1, 0, 0, 0, 2}  //E <- F
+                                            }, {
+                                              {0, 0, 0, 1, 0}, //F <- A
+                                              {0, 1, 0, 0, 0}, //F <- C
+                                              {0, 1, 0, 1, 0}, //F <- D
+                                              {0, 0, 0, 1, 0}, //F <- E
+                                              {0, 0, 0, 1, 1}  //F <- F
                                             }
                                           };
   
@@ -63,10 +73,10 @@ class Markov {
   }
   
   void initSecondOrderDistributions() {
-    int[] secOrdStates = {0, 3, 5, 7};
-    secondOrderDistributions = new EnumeratedIntegerDistribution[4][4];
-    for(int i = 0; i < 4; i++) {
-      for(int j = 0; j < 4; j++) {
+    int[] secOrdStates = {0, 3, 5, 7, 8};
+    secondOrderDistributions = new EnumeratedIntegerDistribution[5][5];
+    for(int i = 0; i < 5; i++) {
+      for(int j = 0; j < 5; j++) {
         secondOrderDistributions[i][j] = new EnumeratedIntegerDistribution(secOrdStates, secondOrderProbabilities[i][j]);
       }
     }
@@ -105,13 +115,15 @@ class Markov {
       case 3: i = 1; break;
       case 5: i = 2; break;
       case 7: i = 3; break;
+      case 8: i = 4; break;
     }
     int j = 0;
     switch(state) {
       case 0: j = 0; break;
       case 3: j = 1; break;
       case 5: j = 2; break;
-      case 7: j = 3; break;      
+      case 7: j = 3; break;
+      case 8: j = 4; break;
     }
     previousState = state;
     int s = secondOrderDistributions[j][i].sample();
