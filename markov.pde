@@ -6,6 +6,9 @@ class Markov {
   Order order = Order.SECOND;
   int state = 0;
   int previousState = 0;
+  int value = 4;
+  int previousValue = 4;
+  
   //TODO proper matrix implementation
   int[] states = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
   double[][] firstOrderProbabilities = {//A  Bb B  C  Db D  Eb E  F  Gb G  Ab
@@ -27,7 +30,7 @@ class Markov {
                                             {//A  C  D  E  F  cur  last
                                               {0, 1, 0, 1, 0}, //A <- A
                                               {1, 0, 0, 0, 0}, //A <- C
-                                              {1, 0, 0, 0, 0}, //A <- D
+                                              {2, 0, 1, 0, 1}, //A <- D
                                               {1, 0, 0, 0, 1}, //A <- E
                                               {1, 0, 0, 1, 0}  //A <- F
                                             }, {  
@@ -41,19 +44,19 @@ class Markov {
                                               {0, 1, 1, 3, 0}, //D <- C
                                               {1, 1, 0, 0, 1}, //D <- D
                                               {0, 1, 0, 0, 0}, //D <- E
-                                              {1, 0, 0, 0, 0}  //D <- F
+                                              {1, 0, 1, 0, 1}  //D <- F
                                             }, {
                                               {1, 0, 0, 1, 1}, //E <- A
                                               {1, 0, 0, 0, 0}, //E <- C
-                                              {0, 0, 1, 0, 1}, //E <- D
-                                              {1, 0, 1, 0, 1}, //E <- E
+                                              {0, 0, 2, 0, 1}, //E <- D
+                                              {2, 0, 2, 0, 1}, //E <- E
                                               {2, 1, 0, 0, 4}  //E <- F
                                             }, {
                                               {0, 0, 0, 1, 0}, //F <- A
                                               {0, 1, 0, 0, 0}, //F <- C
                                               {0, 1, 0, 1, 0}, //F <- D
                                               {0, 0, 0, 1, 1}, //F <- E
-                                              {0, 0, 0, 1, 0}  //F <- F
+                                              {0, 0, 1, 1, 0}  //F <- F
                                             }
                                           };
   
@@ -89,7 +92,7 @@ class Markov {
                                                    {1, 0, 0, 0, 0, 0, 0, 0}, //4  - 16
                                                    {1, 0, 0, 0, 0, 0, 0, 0}, //4  - 8
                                                    {1, 0, 0, 0, 0, 0, 0, 0}, //4  - 8.
-                                                   {1, 0, 0, 0, 0, 0, 0, 0}, //4  - 4
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //4  - 4
                                                    {1, 0, 0, 0, 0, 0, 0, 0}, //4  - 4.
                                                    {1, 0, 0, 0, 0, 0, 0, 0}, //4  - 2
                                                    {1, 0, 0, 0, 0, 0, 0, 0}, //4  - 2.
@@ -136,10 +139,12 @@ class Markov {
   
   EnumeratedIntegerDistribution[]   firstOrderDistributions; 
   EnumeratedIntegerDistribution[][] secondOrderDistributions;
+  EnumeratedIntegerDistribution[][] rhythmDistributions;
   
   Markov() {
     initFirstOrderDistributions();
     initSecondOrderDistributions();
+    initRhythmDistributions();
   }
   
   void initFirstOrderDistributions() {
@@ -155,6 +160,17 @@ class Markov {
     for(int i = 0; i < 5; i++) {
       for(int j = 0; j < 5; j++) {
         secondOrderDistributions[i][j] = new EnumeratedIntegerDistribution(secOrdStates, secondOrderProbabilities[i][j]);
+      }
+    }
+  }
+  
+  //TODO variable naming! rhythm vs value etc
+  void initRhythmDistributions() {
+    int[] rhythmStates = {1, 2, 3, 4, 6, 8, 12, 16};
+    rhythmDistributions = new EnumeratedIntegerDistribution[8][8];
+    for(int i = 0; i < 8; i++) {
+      for(int j = 0; j < 8; j++) {
+        rhythmDistributions[i][j] = new EnumeratedIntegerDistribution(rhythmStates, secondOrderValueProbabilities[i][j]);
       }
     }
   }
@@ -210,9 +226,37 @@ class Markov {
     return s;
   }
   
+  //TODO ehhh
   int getNextValue() {
     // 1 2 3 4 6 8 12 16
-    return 4;
+    int i = 3;
+    switch(previousValue) {
+      case 1:  i = 0; break;
+      case 2:  i = 1; break;
+      case 3:  i = 2; break;
+      case 4:  i = 3; break;
+      case 6:  i = 4; break;
+      case 8:  i = 5; break;
+      case 12: i = 6; break;
+      case 16: i = 7; break;
+    }
+    int j = 3;
+    switch(value) {
+      case 1:  j = 0; break;
+      case 2:  j = 1; break;
+      case 3:  j = 2; break;
+      case 4:  j = 3; break;
+      case 6:  j = 4; break;
+      case 8:  j = 5; break;
+      case 12: j = 6; break;
+      case 16: j = 7; break;
+    }
+    previousValue = value;
+    int s = rhythmDistributions[j][i].sample();
+    value = s;
+    println("previous value: " + previousValue);
+    println(" current value: " + value);
+    return s;
   }
   
 }
