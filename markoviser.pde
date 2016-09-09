@@ -33,10 +33,19 @@ void oscEvent(OscMessage message) {
       int next = markov.getNextNote();
       sendInt(next);
     }
+    if(message.arguments()[i].equals("getnextvalue")){
+      int next = markov.getNextValue();
+      sendValue(next);
+    }
   }
 }
 
 void sendInt(int i) {
   println("sending int: " + i);
   oscP5.send(new OscMessage("/state").add(i), puredata);
+}
+
+void sendValue(int i) {
+  println("sending value: " + i);
+  oscP5.send(new OscMessage("/value").add(i), puredata);
 }
