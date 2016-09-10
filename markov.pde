@@ -73,7 +73,7 @@ class Markov {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}  //16 - 1
                                                  }, {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 16
-                                                   {0, 5, 0, 2, 0, 1, 0, 1}, //8  - 8
+                                                   {1, 5, 0, 2, 0, 1, 0, 1}, //8  - 8
                                                    {0, 0, 0, 3, 0, 0, 1, 0}, //8  - 8.
                                                    {1, 3, 0, 0, 0, 0, 0, 0}, //8  - 4
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 4.
@@ -121,7 +121,7 @@ class Markov {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2. - 8
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2. - 8.
                                                    {0, 1, 0, 1, 0, 0, 1, 0}, //2. - 4
-                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //2. - 4.
+                                                   {1, 0, 0, 1, 0, 0, 0, 0}, //2. - 4.
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2. - 2
                                                    {0, 1, 0, 2, 1, 0, 0, 0}, //2. - 2.
                                                    {0, 0, 0, 1, 0, 0, 0, 0}  //2. - 1
@@ -195,8 +195,6 @@ class Markov {
     previousState = state;
     int s = firstOrderDistributions[state].sample();
     state = s;
-    println("previous state: " + previousState);
-    println(" current state: " + state);
     return s;
   }
   
@@ -221,8 +219,6 @@ class Markov {
     previousState = state;
     int s = secondOrderDistributions[j][i].sample();
     state = s;
-    println("previous state: " + previousState);
-    println(" current state: " + state);
     return s;
   }
   
@@ -254,8 +250,6 @@ class Markov {
     previousValue = value;
     int s = rhythmDistributions[j][i].sample();
     value = s;
-    println("previous value: " + previousValue);
-    println(" current value: " + value);
     return s;
   }
   
