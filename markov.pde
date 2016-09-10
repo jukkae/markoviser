@@ -28,7 +28,7 @@ class Markov {
                              
   double[][][] secondOrderProbabilities = {
                                             {//A  C  D  E  F  cur  last
-                                              {0, 1, 0, 1, 0}, //A <- A
+                                              {1, 1, 0, 1, 0}, //A <- A
                                               {1, 0, 0, 0, 0}, //A <- C
                                               {4, 0, 2, 0, 1}, //A <- D
                                               {4, 0, 0, 0, 1}, //A <- E
