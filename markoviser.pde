@@ -33,10 +33,14 @@ void oscEvent(OscMessage message) {
       int next = markov.getNextNote();
       sendInt(next);
     }
-    if(message.arguments()[i].equals("getnextvalue")){
+    if(message.arguments()[i].equals("getnextvalue")) {
       int next = markov.getNextValue();
       sendValue(next);
       if(next == 16) sendToggle(0); //TODO testing toggle!
+    }
+    if(message.arguments()[i].equals("getnextphrasing")) {
+      int phrasing = markov.getNextPhrasing();
+      sendPhrasing(phrasing);
     }
   }
 }
