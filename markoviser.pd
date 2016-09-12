@@ -35,7 +35,7 @@
 #X msg 521 336 dry 0.7;
 #X msg 95 305 47;
 #X obj 545 -60 select 115;
-#X obj 549 -31 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 549 -31 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 530 22 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
@@ -96,7 +96,7 @@
 #X obj 83 174 routeOSC /state /value /toggle /mute /legato;
 #N canvas 7 31 1347 651 kovsyn 1;
 #X obj 54 -125 inlet f;
-#X obj 549 -90 inlet b;
+#X obj 548 -123 inlet b;
 #X obj 473 461 outlet~;
 #X obj 302 375 *~;
 #X obj 229 301 vline~;
@@ -123,10 +123,10 @@
 #X msg 644 53 15 0 \, 0 100;
 #X msg 543 45 5 0 \, 0 50;
 #X text 55 -143 freq;
-#X text 551 -111 trigger;
+#X text 550 -144 trigger;
 #X obj 371 -140 inlet f;
 #X text 374 -159 mute;
-#X floatatom 373 -104 5 0 0 0 - - -;
+#X floatatom 507 -45 5 0 0 0 - - -;
 #X obj 743 313 *~;
 #X obj 769 280 vline~;
 #X obj 716 260 osc~ 220;
@@ -135,7 +135,7 @@
 #X msg 827 53 5 0 \, 0 30;
 #X obj 806 106 vline~;
 #X floatatom 62 51 5 0 0 0 - - -;
-#X obj 359 -79 select 0 1 2;
+#X obj 359 -63 select 0 1 2;
 #X msg 218 269 1 5 \, 0 500 5;
 #X obj 183 -148 inlet f;
 #X text 183 -165 legato;
@@ -178,9 +178,11 @@
 #X obj 471 186 +~;
 #X obj 637 181 +~;
 #X obj 871 151 +~;
+#X obj 441 -94 +;
 #X connect 0 0 39 0;
 #X connect 0 0 69 1;
 #X connect 1 0 46 0;
+#X connect 1 0 76 0;
 #X connect 3 0 7 0;
 #X connect 4 0 3 1;
 #X connect 5 0 4 0;
@@ -203,8 +205,7 @@
 #X connect 24 0 10 0;
 #X connect 25 0 20 0;
 #X connect 26 0 23 0;
-#X connect 29 0 31 0;
-#X connect 31 0 40 0;
+#X connect 29 0 76 1;
 #X connect 32 0 36 1;
 #X connect 33 0 32 1;
 #X connect 34 0 32 0;
@@ -264,6 +265,8 @@
 #X connect 73 0 63 0;
 #X connect 74 0 64 0;
 #X connect 75 0 65 0;
+#X connect 76 0 40 0;
+#X connect 76 0 31 0;
 #X restore 404 342 pd kovsyn;
 #X msg 930 98 close;
 #X msg 940 123 info;
