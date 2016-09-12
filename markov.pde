@@ -338,23 +338,23 @@ class Markov {
   }
   
   void lerpMatrices(float f) {
-    if (f > 50) {
-      int[] mutingStates = {0, 1, 2};
-      mutingDistributions = new EnumeratedIntegerDistribution[3][3];
-      for(int i = 0; i < 3; i++) {
-        for(int j = 0; j < 3; j++) {
-          mutingDistributions[i][j] = new EnumeratedIntegerDistribution(mutingStates, mutingProbabilitiesLerpTarget[i][j]);
-        }
-      }
-    } else {
-      int[] mutingStates = {0, 1, 2};
-      mutingDistributions = new EnumeratedIntegerDistribution[3][3];
-      for(int i = 0; i < 3; i++) {
-        for(int j = 0; j < 3; j++) {
-          mutingDistributions[i][j] = new EnumeratedIntegerDistribution(mutingStates, mutingProbabilities[i][j]);
-        }
+    int[] mutingStates = {0, 1, 2};
+    mutingDistributions = new EnumeratedIntegerDistribution[3][3];
+    for(int i = 0; i < 3; i++) {
+      for(int j = 0; j < 3; j++) {
+        double[] lerpedRow = lerpRow(mutingProbabilities[i][j], mutingProbabilitiesLerpTarget[i][j], f);
+        mutingDistributions[i][j] = new EnumeratedIntegerDistribution(mutingStates, lerpedRow);
       }
     }
+  }
+  
+  double[] lerpRow(double[] initial, double[] target, float lerp) {
+    lerp = lerp/100; // TODO lerp comes in as 0-99 currently
+    double[] lerped = new double[initial.length];
+    for(int i = 0; i < 3; i++) {
+      lerped[i] = initial[i] + lerp*(target[i]-initial[i]);
+    }
+    return lerped;
   }
   
 }
