@@ -47,6 +47,10 @@ void oscEvent(OscMessage message) {
       int mute = markov.getNextMute();
       sendMute(mute);
     }
+    if(message.arguments()[i].equals("getnextlegato")) {
+      int legato = markov.getNextLegato();
+      sendLegato(legato);
+    }
   }
 }
 
@@ -68,4 +72,9 @@ void sendToggle(int i) {
 void sendMute(int i) {
   println("sending mute: " + i);
   oscP5.send(new OscMessage("/mute").add(i), puredata);
+}
+
+void sendLegato(int i) {
+  println("sending legato: " + i);
+  oscP5.send(new OscMessage("/legato").add(i), puredata);
 }

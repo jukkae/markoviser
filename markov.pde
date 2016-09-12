@@ -474,6 +474,15 @@ class Markov {
     return m;
   }
   
+  // TODO fix this
+  int getNextLegato() {
+    int m = mutingDistributions[muting][previousMuting].sample();
+    previousMuting = muting;
+    muting = m;
+    return m;
+
+  }
+  
   void lerpMatrices(float f) {
     // lerp muting
     mutingDistributions = new EnumeratedIntegerDistribution[3][3];
@@ -504,7 +513,7 @@ class Markov {
   }
     
   double[] lerpRow(double[] initial, double[] target, float lerp) {
-    lerp = lerp/100; // TODO lerp comes in as 0-99 currently
+    //lerp = lerp/100; // TODO lerp comes in as 0-99 currently
     double[] lerped = new double[initial.length];
     for(int i = 0; i < initial.length; i++) {
       lerped[i] = initial[i] + lerp*(target[i]-initial[i]);
