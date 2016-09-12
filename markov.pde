@@ -13,6 +13,9 @@ class Markov {
   
   //TODO proper matrix implementation
   int[] states = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+  int[] mutingStates = {0, 1, 2};
+  int[] rhythmStates = {1, 2, 3, 4, 6, 8, 12, 16};
+  
   double[][] firstOrderProbabilities = {//A  Bb B  C  Db D  Eb E  F  Gb G  Ab
                                          {1, 3, 2, 3, 0, 0, 0, 3, 0, 0, 0, 0}, //A
                                          {1, 3, 0, 0, 4, 0, 0, 0, 3, 0, 0, 0}, //Bb
@@ -84,6 +87,66 @@ class Markov {
                                               {1, 0, 0, 0, 0, 0, 0}, //G <- D
                                               {0, 0, 0, 0, 1, 1, 0}, //G <- E
                                               {0, 0, 0, 0, 1, 1, 0}, //G <- F
+                                              {1, 0, 0, 0, 0, 0, 0}  //G <- G
+                                            }
+                                          };
+
+  double[][][] secondOrderProbabilitiesLerpTarget = {
+                                            {//A  B  C  D  E  F  G  cur  last
+                                              {1, 0, 0, 0, 0, 0, 0}, //A <- A
+                                              {1, 0, 0, 0, 0, 0, 0}, //A <- B
+                                              {1, 0, 0, 0, 0, 0, 0}, //A <- C
+                                              {1, 0, 0, 0, 0, 0, 0}, //A <- D
+                                              {1, 0, 0, 0, 0, 0, 0}, //A <- E
+                                              {1, 0, 0, 0, 0, 0, 0}, //A <- F
+                                              {1, 0, 0, 0, 0, 0, 0}  //A <- G
+                                            }, {
+                                              {1, 0, 0, 0, 0, 0, 0}, //B <- A
+                                              {1, 0, 0, 0, 0, 0, 0}, //B <- B
+                                              {1, 0, 0, 0, 0, 0, 0}, //B <- C
+                                              {1, 0, 0, 0, 0, 0, 0}, //B <- D
+                                              {1, 0, 0, 0, 0, 0, 0}, //B <- E
+                                              {1, 0, 0, 0, 0, 0, 0}, //B <- F
+                                              {1, 0, 0, 0, 0, 0, 0}  //B <- G
+                                            }, {  
+                                              {1, 0, 0, 0, 0, 0, 0}, //C <- A  
+                                              {1, 0, 0, 0, 0, 0, 0}, //C <- B
+                                              {1, 0, 0, 0, 0, 0, 0}, //C <- C
+                                              {1, 0, 0, 0, 0, 0, 0}, //C <- D
+                                              {1, 0, 0, 0, 0, 0, 0}, //C <- E
+                                              {1, 0, 0, 0, 0, 0, 0}, //C <- F
+                                              {1, 0, 0, 0, 0, 0, 0}  //C <- G
+                                            }, {
+                                              {1, 0, 0, 0, 0, 0, 0}, //D <- A
+                                              {1, 0, 0, 0, 0, 0, 0}, //D <- B
+                                              {1, 0, 0, 0, 0, 0, 0}, //D <- C
+                                              {1, 0, 0, 0, 0, 0, 0}, //D <- D
+                                              {1, 0, 0, 0, 0, 0, 0}, //D <- E
+                                              {1, 0, 0, 0, 0, 0, 0}, //D <- F
+                                              {1, 0, 0, 0, 0, 0, 0}  //D <- G
+                                            }, {
+                                              {1, 0, 0, 0, 0, 0, 0}, //E <- A
+                                              {1, 0, 0, 0, 0, 0, 0}, //E <- B
+                                              {1, 0, 0, 0, 0, 0, 0}, //E <- C
+                                              {1, 0, 0, 0, 0, 0, 0}, //E <- D
+                                              {1, 0, 0, 0, 0, 0, 0}, //E <- E
+                                              {1, 0, 0, 0, 0, 0, 0}, //E <- F
+                                              {1, 0, 0, 0, 0, 0, 0}  //E <- G
+                                            }, {
+                                              {1, 0, 0, 0, 0, 0, 0}, //F <- A
+                                              {1, 0, 0, 0, 0, 0, 0}, //F <- B
+                                              {1, 0, 0, 0, 0, 0, 0}, //F <- C
+                                              {1, 0, 0, 0, 0, 0, 0}, //F <- D
+                                              {1, 0, 0, 0, 0, 0, 0}, //F <- E
+                                              {1, 0, 0, 0, 0, 0, 0}, //F <- F
+                                              {1, 0, 0, 0, 0, 0, 0}  //F <- G
+                                            }, {
+                                              {1, 0, 0, 0, 0, 0, 0}, //G <- A
+                                              {1, 0, 0, 0, 0, 0, 0}, //G <- B
+                                              {1, 0, 0, 0, 0, 0, 0}, //G <- C
+                                              {1, 0, 0, 0, 0, 0, 0}, //G <- D
+                                              {1, 0, 0, 0, 0, 0, 0}, //G <- E
+                                              {1, 0, 0, 0, 0, 0, 0}, //G <- F
                                               {1, 0, 0, 0, 0, 0, 0}  //G <- G
                                             }
                                           };
@@ -229,7 +292,6 @@ class Markov {
   
   //TODO variable naming! rhythm vs value etc
   void initRhythmDistributions() {
-    int[] rhythmStates = {1, 2, 3, 4, 6, 8, 12, 16};
     rhythmDistributions = new EnumeratedIntegerDistribution[8][8];
     for(int i = 0; i < 8; i++) {
       for(int j = 0; j < 8; j++) {
@@ -239,7 +301,6 @@ class Markov {
   }
   
   void initMutingDistributions() {
-    int[] mutingStates = {0, 1, 2};
     mutingDistributions = new EnumeratedIntegerDistribution[3][3];
     for(int i = 0; i < 3; i++) {
       for(int j = 0; j < 3; j++) {
@@ -338,10 +399,9 @@ class Markov {
   }
   
   void lerpMatrices(float f) {
-    int[] mutingStates = {0, 1, 2};
     mutingDistributions = new EnumeratedIntegerDistribution[3][3];
-    for(int i = 0; i < 3; i++) {
-      for(int j = 0; j < 3; j++) {
+    for(int i = 0; i < 3; i++) { // TODO yeah i know these should be dynamic
+      for(int j = 0; j < 3; j++) { // well sue me
         double[] lerpedRow = lerpRow(mutingProbabilities[i][j], mutingProbabilitiesLerpTarget[i][j], f);
         mutingDistributions[i][j] = new EnumeratedIntegerDistribution(mutingStates, lerpedRow);
       }
@@ -351,7 +411,7 @@ class Markov {
   double[] lerpRow(double[] initial, double[] target, float lerp) {
     lerp = lerp/100; // TODO lerp comes in as 0-99 currently
     double[] lerped = new double[initial.length];
-    for(int i = 0; i < 3; i++) {
+    for(int i = 0; i < initial.length; i++) {
       lerped[i] = initial[i] + lerp*(target[i]-initial[i]);
     }
     return lerped;
