@@ -10,12 +10,15 @@ class Markov {
   int previousValue = 4;
   int muting = 0;
   int previousMuting = 0;
+  int legato = 0;
+  int previousLegato = 0;
   
   //TODO proper matrix implementation
   int[] states = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
   int[] secOrdStates = {0, 2, 3, 5, 7, 8, 10};
   int[] mutingStates = {0, 1, 2};
   int[] rhythmStates = {1, 2, 3, 4, 6, 8, 12, 16};
+  int[] legatoStates = {0, 1};
   
   double[][] firstOrderProbabilities = {//A  Bb B  C  Db D  Eb E  F  Gb G  Ab
                                          {1, 3, 2, 3, 0, 0, 0, 3, 0, 0, 0, 0}, //A
@@ -336,18 +339,30 @@ class Markov {
                                          {0, 0, 1}  //2 - 2
                                        }
                                      };
+                                     
+  double[][][] legatoProbabilities = {
+                                       {
+                                         {1, 1},
+                                         {1, 0}
+                                       }, {
+                                         {1, 0},
+                                         {1, 0}
+                                       }
+                                     };
                                                 
   
   EnumeratedIntegerDistribution[]   firstOrderDistributions; 
   EnumeratedIntegerDistribution[][] secondOrderDistributions;
   EnumeratedIntegerDistribution[][] rhythmDistributions;
   EnumeratedIntegerDistribution[][] mutingDistributions;
+  EnumeratedIntegerDistribution[][] legatoDistributions;
   
   Markov() {
     initFirstOrderDistributions();
     initSecondOrderDistributions();
     initRhythmDistributions();
     initMutingDistributions();
+    initLegatoDistributions();
   }
   
   void initFirstOrderDistributions() {
@@ -381,6 +396,15 @@ class Markov {
     for(int i = 0; i < 3; i++) {
       for(int j = 0; j < 3; j++) {
         mutingDistributions[i][j] = new EnumeratedIntegerDistribution(mutingStates, mutingProbabilities[i][j]);
+      }
+    }
+  }
+
+  void initLegatoDistributions() {
+    legatoDistributions = new EnumeratedIntegerDistribution[2][2];
+    for(int i = 0; i < 2; i++) {
+      for(int j = 0; j < 2; j++) {
+        legatoDistributions[i][j] = new EnumeratedIntegerDistribution(legatoStates, legatoProbabilities[i][j]);
       }
     }
   }
@@ -476,10 +500,10 @@ class Markov {
   
   // TODO fix this
   int getNextLegato() {
-    int m = mutingDistributions[muting][previousMuting].sample();
-    previousMuting = muting;
-    muting = m;
-    return m;
+    int l = legatoDistributions[legato][previousLegato].sample();
+    previousLegato = legato;
+    legato = l;
+    return l;
 
   }
   
