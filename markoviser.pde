@@ -28,6 +28,11 @@ void mouseClicked() {
 
 void oscEvent(OscMessage message) {
   println(message.arguments());
+  if(message.checkAddrPattern("/lerp")) {
+    float lerp = (float) message.arguments()[0];
+    markov.lerpMatrices(lerp);
+    println("lerp: " + lerp);
+  }
   for(int i = 0; i < message.arguments().length; i++) {
     if(message.arguments()[i].equals("getnextnote")){
       int next = markov.getNextNote();
@@ -36,11 +41,11 @@ void oscEvent(OscMessage message) {
     if(message.arguments()[i].equals("getnextvalue")) {
       int next = markov.getNextValue();
       sendValue(next);
-      if(next == 16) sendToggle(0); //TODO testing toggle!
+      if(next == 16 || next == 12) sendToggle(0); //TODO testing toggle!
     }
-    if(message.arguments()[i].equals("getnextphrasing")) {
-      int phrasing = markov.getNextPhrasing();
-      sendPhrasing(phrasing);
+    if(message.arguments()[i].equals("getnextmute")) {
+      int mute = markov.getNextMute();
+      sendMute(mute);
     }
   }
 }
@@ -58,4 +63,9 @@ void sendValue(int i) {
 void sendToggle(int i) {
   println("sending toggle: " + i);
   oscP5.send(new OscMessage("/toggle").add(i), puredata);
+}
+
+void sendMute(int i) {
+  println("sending mute: " + i);
+  oscP5.send(new OscMessage("/mute").add(i), puredata);
 }

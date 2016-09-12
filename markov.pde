@@ -8,6 +8,8 @@ class Markov {
   int previousState = 0;
   int value = 4;
   int previousValue = 4;
+  int muting = 0;
+  int previousMuting = 0;
   
   //TODO proper matrix implementation
   int[] states = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
@@ -162,15 +164,50 @@ class Markov {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}  //1  - 1
                                                  }
                                                };
+                                               
+  double[][][] mutingProbabilities = {
+                                       {//0  1  2   cur   last
+                                         {9, 1, 0}, //0 - 0
+                                         {2, 1, 0}, //0 - 1
+                                         {1, 0, 0}  //0 - 2
+                                       }, {
+                                         {3, 1, 0}, //1 - 0
+                                         {1, 7, 0}, //1 - 1
+                                         {1, 0, 0}  //1 - 2
+                                       }, {
+                                         {1, 0, 0}, //2 - 0
+                                         {1, 0, 0}, //2 - 1
+                                         {1, 0, 0}  //2 - 2
+                                       }
+                                     };
+                                     
+  double[][][] mutingProbabilitiesLerpTarget = {
+                                       {//0  1  2   cur   last
+                                         {0, 0, 1}, //0 - 0
+                                         {0, 0, 1}, //0 - 1
+                                         {0, 0, 1}  //0 - 2
+                                       }, {
+                                         {0, 0, 1}, //1 - 0
+                                         {0, 0, 1}, //1 - 1
+                                         {0, 0, 1}  //1 - 2
+                                       }, {
+                                         {0, 0, 1}, //2 - 0
+                                         {0, 0, 1}, //2 - 1
+                                         {0, 0, 1}  //2 - 2
+                                       }
+                                     };
+                                                
   
   EnumeratedIntegerDistribution[]   firstOrderDistributions; 
   EnumeratedIntegerDistribution[][] secondOrderDistributions;
   EnumeratedIntegerDistribution[][] rhythmDistributions;
+  EnumeratedIntegerDistribution[][] mutingDistributions;
   
   Markov() {
     initFirstOrderDistributions();
     initSecondOrderDistributions();
     initRhythmDistributions();
+    initMutingDistributions();
   }
   
   void initFirstOrderDistributions() {
@@ -197,6 +234,16 @@ class Markov {
     for(int i = 0; i < 8; i++) {
       for(int j = 0; j < 8; j++) {
         rhythmDistributions[i][j] = new EnumeratedIntegerDistribution(rhythmStates, secondOrderValueProbabilities[i][j]);
+      }
+    }
+  }
+  
+  void initMutingDistributions() {
+    int[] mutingStates = {0, 1, 2};
+    mutingDistributions = new EnumeratedIntegerDistribution[3][3];
+    for(int i = 0; i < 3; i++) {
+      for(int j = 0; j < 3; j++) {
+        mutingDistributions[i][j] = new EnumeratedIntegerDistribution(mutingStates, mutingProbabilities[i][j]);
       }
     }
   }
@@ -281,6 +328,33 @@ class Markov {
     int s = rhythmDistributions[j][i].sample();
     value = s;
     return s;
+  }
+  
+  int getNextMute() {
+    int m = mutingDistributions[muting][previousMuting].sample();
+    previousMuting = muting;
+    muting = m;
+    return m;
+  }
+  
+  void lerpMatrices(float f) {
+    if (f > 50) {
+      int[] mutingStates = {0, 1, 2};
+      mutingDistributions = new EnumeratedIntegerDistribution[3][3];
+      for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < 3; j++) {
+          mutingDistributions[i][j] = new EnumeratedIntegerDistribution(mutingStates, mutingProbabilitiesLerpTarget[i][j]);
+        }
+      }
+    } else {
+      int[] mutingStates = {0, 1, 2};
+      mutingDistributions = new EnumeratedIntegerDistribution[3][3];
+      for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < 3; j++) {
+          mutingDistributions[i][j] = new EnumeratedIntegerDistribution(mutingStates, mutingProbabilities[i][j]);
+        }
+      }
+    }
   }
   
 }
