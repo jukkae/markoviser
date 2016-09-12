@@ -13,6 +13,7 @@ class Markov {
   
   //TODO proper matrix implementation
   int[] states = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+  int[] secOrdStates = {0, 2, 3, 5, 7, 8, 10};
   int[] mutingStates = {0, 1, 2};
   int[] rhythmStates = {1, 2, 3, 4, 6, 8, 12, 16};
   
@@ -281,7 +282,6 @@ class Markov {
   }
   
   void initSecondOrderDistributions() {
-    int[] secOrdStates = {0, 2, 3, 5, 7, 8, 10};
     secondOrderDistributions = new EnumeratedIntegerDistribution[7][7];
     for(int i = 0; i < 7; i++) {
       for(int j = 0; j < 7; j++) {
@@ -404,6 +404,14 @@ class Markov {
       for(int j = 0; j < 3; j++) { // well sue me
         double[] lerpedRow = lerpRow(mutingProbabilities[i][j], mutingProbabilitiesLerpTarget[i][j], f);
         mutingDistributions[i][j] = new EnumeratedIntegerDistribution(mutingStates, lerpedRow);
+      }
+    }
+    
+    secondOrderDistributions = new EnumeratedIntegerDistribution[7][7];
+    for(int i = 0; i < 7; i++) {
+      for(int j = 0; j < 7; j++) {
+        double[] lerpedRow = lerpRow(secondOrderProbabilities[i][j], secondOrderProbabilitiesLerpTarget[i][j], f);
+        secondOrderDistributions[i][j] = new EnumeratedIntegerDistribution(secOrdStates, lerpedRow);
       }
     }
   }
