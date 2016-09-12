@@ -36,6 +36,7 @@ void oscEvent(OscMessage message) {
     if(message.arguments()[i].equals("getnextvalue")){
       int next = markov.getNextValue();
       sendValue(next);
+      if(next == 16) sendToggle(0); //TODO testing toggle!
     }
   }
 }
@@ -48,4 +49,9 @@ void sendInt(int i) {
 void sendValue(int i) {
   println("sending value: " + i);
   oscP5.send(new OscMessage("/value").add(i), puredata);
+}
+
+void sendToggle(int i) {
+  println("sending toggle: " + i);
+  oscP5.send(new OscMessage("/toggle").add(i), puredata);
 }
