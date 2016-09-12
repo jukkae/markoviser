@@ -30,8 +30,11 @@ void oscEvent(OscMessage message) {
   println(message.arguments());
   if(message.checkAddrPattern("/lerp1")) {
     float lerp = (float) message.arguments()[0];
-    markov.lerpMatrices(lerp);
-    println("lerp: " + lerp);
+    markov.lerpMatricesA(lerp);
+  }
+  if(message.checkAddrPattern("/lerp2")) {
+    float lerp = (float) message.arguments()[0];
+    markov.lerpMatricesB(lerp);
   }
   for(int i = 0; i < message.arguments().length; i++) {
     if(message.arguments()[i].equals("getnextnote")){

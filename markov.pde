@@ -483,7 +483,7 @@ class Markov {
 
   }
   
-  void lerpMatrices(float f) {
+  void lerpAllMatrices(float f) {
     // lerp muting
     mutingDistributions = new EnumeratedIntegerDistribution[3][3];
     for(int i = 0; i < 3; i++) { // TODO yeah i know these should be dynamic
@@ -499,6 +499,37 @@ class Markov {
       for(int j = 0; j < 7; j++) {
         double[] lerpedRow = lerpRow(secondOrderProbabilities[i][j], secondOrderProbabilitiesLerpTarget[i][j], f);
         secondOrderDistributions[i][j] = new EnumeratedIntegerDistribution(secOrdStates, lerpedRow);
+      }
+    }
+
+    // lerp values
+    rhythmDistributions = new EnumeratedIntegerDistribution[8][8];
+    for(int i = 0; i < 8; i++) {
+      for(int j = 0; j < 8; j++) {
+        double[] lerpedRow = lerpRow(secondOrderValueProbabilities[i][j], secondOrderValueProbabilitiesLerpTarget[i][j], f);
+        rhythmDistributions[i][j] = new EnumeratedIntegerDistribution(rhythmStates, lerpedRow);
+      }
+    }
+  }
+  
+  void lerpMatricesA(float f) {
+    // lerp notes
+    secondOrderDistributions = new EnumeratedIntegerDistribution[7][7];
+    for(int i = 0; i < 7; i++) {
+      for(int j = 0; j < 7; j++) {
+        double[] lerpedRow = lerpRow(secondOrderProbabilities[i][j], secondOrderProbabilitiesLerpTarget[i][j], f);
+        secondOrderDistributions[i][j] = new EnumeratedIntegerDistribution(secOrdStates, lerpedRow);
+      }
+    }
+  }
+  
+  void lerpMatricesB(float f) {
+    // lerp muting
+    mutingDistributions = new EnumeratedIntegerDistribution[3][3];
+    for(int i = 0; i < 3; i++) { // TODO yeah i know these should be dynamic
+      for(int j = 0; j < 3; j++) { // well sue me
+        double[] lerpedRow = lerpRow(mutingProbabilities[i][j], mutingProbabilitiesLerpTarget[i][j], f);
+        mutingDistributions[i][j] = new EnumeratedIntegerDistribution(mutingStates, lerpedRow);
       }
     }
 
