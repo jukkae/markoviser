@@ -28,7 +28,7 @@ void mouseClicked() {
 
 void oscEvent(OscMessage message) {
   println(message.arguments());
-  if(message.checkAddrPattern("/lerp")) {
+  if(message.checkAddrPattern("/lerp1")) {
     float lerp = (float) message.arguments()[0];
     markov.lerpMatrices(lerp);
     println("lerp: " + lerp);
