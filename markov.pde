@@ -244,11 +244,11 @@ class Markov {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}  //16 - 1
                                                  }, {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 16
-                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 8
+                                                   {0, 1, 0, 1, 0, 0, 0, 0}, //8  - 8
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 8.
-                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 4
+                                                   {0, 1, 0, 1, 0, 0, 0, 0}, //8  - 4
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 4.
-                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 2
+                                                   {0, 1, 0, 0, 0, 0, 0, 0}, //8  - 2
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 2.
                                                    {0, 0, 0, 1, 0, 0, 0, 0}  //8  - 1
                                                  }, {
@@ -264,7 +264,7 @@ class Markov {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4  - 16
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4  - 8
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4  - 8.
-                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //4  - 4
+                                                   {0, 1, 0, 7, 1, 1, 0, 0}, //4  - 4
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4  - 4.
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4  - 2
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4  - 2.
@@ -273,7 +273,7 @@ class Markov {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4. - 16
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4. - 8
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4. - 8.
-                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //4. - 4
+                                                   {0, 0, 0, 1, 1, 0, 0, 0}, //4. - 4
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4. - 4.
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4. - 2
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4. - 2.
@@ -282,7 +282,7 @@ class Markov {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 16
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 8
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 8.
-                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 4
+                                                   {0, 1, 0, 1, 0, 0, 0, 0}, //2  - 4
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 4.
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 2
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 2.
@@ -336,7 +336,7 @@ class Markov {
                                        }, {
                                          {0, 0, 1}, //2 - 0
                                          {0, 0, 1}, //2 - 1
-                                         {0, 0, 1}  //2 - 2
+                                         {0, 1, 7}  //2 - 2
                                        }
                                      };
                                      
@@ -545,6 +545,15 @@ class Markov {
         secondOrderDistributions[i][j] = new EnumeratedIntegerDistribution(secOrdStates, lerpedRow);
       }
     }
+
+    // lerp values
+    rhythmDistributions = new EnumeratedIntegerDistribution[8][8];
+    for(int i = 0; i < 8; i++) {
+      for(int j = 0; j < 8; j++) {
+        double[] lerpedRow = lerpRow(secondOrderValueProbabilities[i][j], secondOrderValueProbabilitiesLerpTarget[i][j], f);
+        rhythmDistributions[i][j] = new EnumeratedIntegerDistribution(rhythmStates, lerpedRow);
+      }
+    }
   }
   
   void lerpMatricesB(float f) {
@@ -554,15 +563,6 @@ class Markov {
       for(int j = 0; j < 3; j++) { // well sue me
         double[] lerpedRow = lerpRow(mutingProbabilities[i][j], mutingProbabilitiesLerpTarget[i][j], f);
         mutingDistributions[i][j] = new EnumeratedIntegerDistribution(mutingStates, lerpedRow);
-      }
-    }
-
-    // lerp values
-    rhythmDistributions = new EnumeratedIntegerDistribution[8][8];
-    for(int i = 0; i < 8; i++) {
-      for(int j = 0; j < 8; j++) {
-        double[] lerpedRow = lerpRow(secondOrderValueProbabilities[i][j], secondOrderValueProbabilitiesLerpTarget[i][j], f);
-        rhythmDistributions[i][j] = new EnumeratedIntegerDistribution(rhythmStates, lerpedRow);
       }
     }
   }
