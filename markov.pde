@@ -35,7 +35,7 @@ class Markov {
                                          {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}  //Ab
                                        };
                              
-  double[][][] secondOrderProbabilities = {
+  double[][][] secondOrderProbabilitiesLerpTarget = {
                                             {//A  B  C  D  E  F  G  cur  last
                                               {1, 1, 1, 0, 1, 0, 0}, //A <- A
                                               {1, 0, 1, 0, 1, 0, 0}, //A <- B
@@ -48,7 +48,7 @@ class Markov {
                                               {1, 1, 2, 0, 0, 1, 0}, //B <- A
                                               {1, 0, 1, 0, 0, 0, 0}, //B <- B
                                               {1, 0, 0, 0, 0, 0, 0}, //B <- C
-                                              {4, 0, 0, 2, 0, 1, 0}, //B <- D
+                                              {0, 0, 1, 2, 0, 1, 0}, //B <- D
                                               {0, 0, 0, 0, 0, 1, 2}, //B <- E
                                               {1, 0, 0, 1, 0, 1, 0}, //B <- F
                                               {1, 0, 0, 0, 0, 0, 0}  //B <- G
@@ -95,7 +95,7 @@ class Markov {
                                             }
                                           };
 
-  double[][][] secondOrderProbabilitiesLerpTarget = {
+  double[][][] secondOrderProbabilities = {
                                             {//A  B  C  D  E  F  G  cur  last
                                               {7, 0, 3, 1, 3, 0, 0}, //A <- A
                                               {1, 0, 0, 0, 0, 0, 0}, //A <- B
@@ -156,7 +156,7 @@ class Markov {
                                           };
   
   //TODO remove 8.!
-  double[][][] secondOrderValueProbabilities = {
+  double[][][] secondOrderValueProbabilitiesLerpTarget = {
                                                  {//16 8  8. 4  4. 2  2. 1     cur  last
                                                    {0, 1, 0, 0, 0, 0, 0, 0}, //16 - 16
                                                    {1, 0, 0, 0, 0, 0, 0, 0}, //16 - 8
@@ -232,7 +232,7 @@ class Markov {
                                                  }
                                                };
                                                
-   double[][][] secondOrderValueProbabilitiesLerpTarget = {
+   double[][][] secondOrderValueProbabilities = {
                                                  {//16 8  8. 4  4. 2  2. 1     cur  last
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //16 - 16
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //16 - 8
@@ -310,7 +310,7 @@ class Markov {
                                                
   double[][][] mutingProbabilities = {
                                        {//0  1  2   cur   last
-                                         {9, 1, 0}, //0 - 0
+                                         {8, 1, 0}, //0 - 0
                                          {2, 1, 0}, //0 - 1
                                          {1, 0, 0}  //0 - 2
                                        }, {
