@@ -27,7 +27,7 @@
 #X msg 666 394 open markoviser.wav;
 #X msg 797 414 stop;
 #X obj 590 244 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 1500 1;
+-1 -1 1270 1;
 #X msg 588 387 \$1 50;
 #X obj 586 428 vline~;
 #X obj 523 456 *~;
@@ -35,13 +35,13 @@
 #X msg 521 336 dry 0.7;
 #X msg 66 360 47;
 #X obj 545 -60 select 115;
-#X obj 549 -31 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 549 -31 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 530 22 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X floatatom 543 66 5 0 0 0 - - -;
 #X obj 545 106 select 0;
-#X msg 471 145 sendtyped /test s getnextnote;
+#X msg 471 160 sendtyped /test s getnextnote;
 #X obj 545 86 mod 4;
 #X obj 530 42 counter 15;
 #X obj 375 312 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
@@ -63,9 +63,9 @@
 #X obj 721 -60 select 109;
 #X text 749 -39 m;
 #X msg 686 149 sendtyped /test s getnextmute;
-#X obj 388 37 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+#X obj 386 5 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X floatatom 366 67 5 0 100 0 - - -;
+#X floatatom 364 35 5 0 100 0 - - -;
 #X obj 807 -59 select 108;
 #X text 826 -79 l;
 #X msg 687 177 sendtyped /test s getnextlegato;
@@ -146,7 +146,7 @@
 #X obj 917 215 *~ 5;
 #X obj 992 183 +;
 #X obj 990 213 +;
-#X text 1048 87;
+#X text 1048 87 comment;
 #X msg 1200 14 0.2 2 \, 0 10 5;
 #X msg 1033 254 0.08 2 \, 0 50 2;
 #X msg 1029 230 0.15 2 \, 0 100 2;
@@ -386,13 +386,13 @@ the ground \, if you want to avoid flickering of the values !;
 #X text 961 76 select the serial port;
 #X text 981 98 close the serial port;
 #X obj 1012 -16 arduino 1;
-#X obj 318 24 r a0;
-#X floatatom 318 97 5 0 0 0 - - -;
-#X obj 367 86 / 100;
+#X obj 316 -8 r a0;
+#X floatatom 316 65 5 0 0 0 - - -;
+#X obj 365 54 / 100;
 #X obj 416 28 r a1;
-#X floatatom 411 82 5 0 0 0 - - -;
+#X floatatom 408 71 5 0 0 0 - - -;
 #X msg 243 126 sendtyped /lerp1 f \$1;
-#X msg 392 123 sendtyped /lerp2 f \$1;
+#X msg 388 132 sendtyped /lerp2 f \$1;
 #X obj 492 20 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X floatatom 470 50 5 0 100 0 - - -;
@@ -401,17 +401,21 @@ the ground \, if you want to avoid flickering of the values !;
 #X obj 410 310 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X text 434 309 todo: some notes are choked;
-#X obj 419 60 spigot;
+#X obj 416 49 spigot;
 #X obj 455 33 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
-#X obj 320 66 spigot;
-#X obj 364 27 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 318 34 spigot;
+#X obj 362 -5 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X floatatom 602 -15 5 0 0 0 - - -;
 #X msg 607 222 0.1;
 #X obj 535 202 loadbang;
 #X obj 420 5 + 70;
 #X obj 407 -25 * -10;
+#X obj 312 84 clip 0 0.8;
+#X obj 315 104 * 1.25;
+#X obj 393 92 clip 0 0.8;
+#X obj 392 112 * 1.25;
 #X connect 1 0 62 0;
 #X connect 2 0 1 0;
 #X connect 3 0 5 0;
@@ -508,11 +512,11 @@ the ground \, if you want to avoid flickering of the values !;
 #X connect 78 0 70 0;
 #X connect 81 0 68 0;
 #X connect 82 0 97 0;
-#X connect 83 0 87 0;
+#X connect 83 0 104 0;
 #X connect 84 0 83 0;
 #X connect 85 0 95 0;
-#X connect 86 0 88 0;
 #X connect 86 0 103 0;
+#X connect 86 0 106 0;
 #X connect 87 0 6 0;
 #X connect 88 0 6 0;
 #X connect 89 0 90 0;
@@ -531,3 +535,7 @@ the ground \, if you want to avoid flickering of the values !;
 #X connect 101 0 31 0;
 #X connect 102 0 99 0;
 #X connect 103 0 102 0;
+#X connect 104 0 105 0;
+#X connect 105 0 87 0;
+#X connect 106 0 107 0;
+#X connect 107 0 88 0;
