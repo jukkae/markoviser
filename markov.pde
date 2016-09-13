@@ -342,13 +342,23 @@ class Markov {
                                      
   double[][][] legatoProbabilities = {
                                        {
-                                         {1, 1},
+                                         {5, 1},
                                          {1, 0}
                                        }, {
                                          {1, 0},
                                          {1, 0}
                                        }
                                      };
+                                     
+  double[][][] legatoProbabilitiesLerpTarget = {
+                                       {
+                                         {2, 1},
+                                         {3, 1}
+                                       }, {
+                                         {1, 0},
+                                         {1, 0}
+                                       }
+                                     };                                     
                                                 
   
   EnumeratedIntegerDistribution[]   firstOrderDistributions; 
@@ -534,6 +544,16 @@ class Markov {
         rhythmDistributions[i][j] = new EnumeratedIntegerDistribution(rhythmStates, lerpedRow);
       }
     }
+    
+    // lerp legato
+    legatoDistributions = new EnumeratedIntegerDistribution[2][2];
+    for(int i = 0; i < 2; i++) {
+      for(int j = 0; j < 2; j++) {
+        double[] lerpedRow = lerpRow(legatoProbabilities[i][j], legatoProbabilitiesLerpTarget[i][j], f);
+        legatoDistributions[i][j] = new EnumeratedIntegerDistribution(legatoStates, lerpedRow);
+      }
+    }
+    
   }
   
   void lerpMatricesA(float f) {
@@ -563,6 +583,15 @@ class Markov {
       for(int j = 0; j < 3; j++) { // well sue me
         double[] lerpedRow = lerpRow(mutingProbabilities[i][j], mutingProbabilitiesLerpTarget[i][j], f);
         mutingDistributions[i][j] = new EnumeratedIntegerDistribution(mutingStates, lerpedRow);
+      }
+    }
+    
+    // lerp legato
+    legatoDistributions = new EnumeratedIntegerDistribution[2][2];
+    for(int i = 0; i < 2; i++) {
+      for(int j = 0; j < 2; j++) {
+        double[] lerpedRow = lerpRow(legatoProbabilities[i][j], legatoProbabilitiesLerpTarget[i][j], f);
+        legatoDistributions[i][j] = new EnumeratedIntegerDistribution(legatoStates, lerpedRow);
       }
     }
   }
