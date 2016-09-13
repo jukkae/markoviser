@@ -27,7 +27,6 @@ void mouseClicked() {
 }
 
 void oscEvent(OscMessage message) {
-  println(message.arguments());
   if(message.checkAddrPattern("/lerp1")) {
     float lerp = (float) message.arguments()[0];
     markov.lerpMatricesA(lerp);
@@ -58,26 +57,21 @@ void oscEvent(OscMessage message) {
 }
 
 void sendInt(int i) {
-  println("sending int: " + i);
   oscP5.send(new OscMessage("/state").add(i), puredata);
 }
 
 void sendValue(int i) {
-  println("sending value: " + i);
   oscP5.send(new OscMessage("/value").add(i), puredata);
 }
 
 void sendToggle(int i) {
-  println("sending toggle: " + i);
   oscP5.send(new OscMessage("/toggle").add(i), puredata);
 }
 
 void sendMute(int i) {
-  println("sending mute: " + i);
   oscP5.send(new OscMessage("/mute").add(i), puredata);
 }
 
 void sendLegato(int i) {
-  println("sending legato: " + i);
   oscP5.send(new OscMessage("/legato").add(i), puredata);
 }
