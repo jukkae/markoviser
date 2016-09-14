@@ -30,7 +30,7 @@
 #X obj 523 464 *~;
 #X obj 486 464 *~;
 #X msg 521 336 dry 0.7;
-#X obj 545 -29 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 545 -29 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 495 35 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
@@ -70,7 +70,7 @@
 #X obj 470 237 +~;
 #X obj 473 65 vline~;
 #X obj 347 232 +~;
-#X text 55 -143 freq;
+#X text 30 -152 freq;
 #X obj 371 -140 inlet f;
 #X text 374 -159 mute;
 #X obj 566 239 +~;
@@ -86,7 +86,7 @@
 #X obj 563 188 +~;
 #X obj 1154 143 +~;
 #X obj 441 -94 +;
-#X obj 54 -125 inlet f;
+#X obj 29 -134 inlet f;
 #X obj 547 4 random 10;
 #X obj 637 3 random 15;
 #X msg 562 39 \$1 5 \, 0 75 5;
@@ -715,6 +715,11 @@ the ground \, if you want to avoid flickering of the values !;
 #X floatatom 1140 474 5 0 0 0 - - -;
 #X floatatom 998 476 5 0 0 0 - - -;
 #X msg 66 358 47;
+#X obj 271 469 *;
+#X msg 260 427 1;
+#X msg 298 428 2;
+#X text 326 453 todo: chance to select 2 if eg. p0 > ~0.8 && p1 > ~0.6
+;
 #X connect 1 0 111 0;
 #X connect 2 0 1 0;
 #X connect 3 0 5 0;
@@ -722,7 +727,7 @@ the ground \, if you want to avoid flickering of the values !;
 #X connect 6 0 5 0;
 #X connect 7 0 107 0;
 #X connect 9 0 10 0;
-#X connect 10 0 52 0;
+#X connect 10 0 119 0;
 #X connect 11 0 12 0;
 #X connect 12 0 36 0;
 #X connect 12 0 45 0;
@@ -846,3 +851,6 @@ the ground \, if you want to avoid flickering of the values !;
 #X connect 116 0 94 0;
 #X connect 117 0 93 0;
 #X connect 118 0 10 0;
+#X connect 119 0 52 0;
+#X connect 120 0 119 1;
+#X connect 121 0 119 1;
