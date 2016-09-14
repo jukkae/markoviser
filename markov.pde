@@ -244,18 +244,18 @@ class Markov {
   //TODO remove 8.!
   double[][][] secondOrderValueProbabilitiesLerpTarget = {
                                                  {//16 8  8. 4  4. 2  2. 1     cur  last
-                                                   {0, 1, 0, 0, 0, 0, 0, 0}, //16 - 16
-                                                   {1, 0, 0, 0, 0, 0, 0, 0}, //16 - 8
+                                                   {2, 1, 0, 0, 0, 0, 0, 0}, //16 - 16
+                                                   {2, 1, 0, 0, 0, 0, 0, 0}, //16 - 8
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //16 - 8.
                                                    {1, 0, 0, 0, 0, 0, 0, 0}, //16 - 4
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //16 - 4.
-                                                   {1, 0, 1, 0, 0, 0, 0, 0}, //16 - 2
-                                                   {1, 0, 1, 0, 0, 0, 0, 0}, //16 - 2.
+                                                   {1, 0, 0, 0, 0, 0, 0, 0}, //16 - 2
+                                                   {1, 0, 0, 0, 0, 0, 0, 0}, //16 - 2.
                                                    {0, 0, 0, 1, 0, 0, 0, 0}  //16 - 1
                                                  }, {
-                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 16
-                                                   {1, 6, 0, 2, 0, 1, 0, 1}, //8  - 8
-                                                   {0, 0, 1, 3, 0, 0, 1, 0}, //8  - 8.
+                                                   {0, 1, 0, 0, 0, 0, 0, 0}, //8  - 16
+                                                   {1, 4, 0, 2, 0, 0, 0, 0}, //8  - 8
+                                                   {0, 0, 0, 3, 0, 0, 0, 0}, //8  - 8.
                                                    {1, 3, 0, 0, 0, 0, 0, 0}, //8  - 4
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 4.
                                                    {1, 1, 0, 0, 0, 0, 0, 0}, //8  - 2
@@ -263,7 +263,7 @@ class Markov {
                                                    {0, 1, 0, 0, 0, 0, 0, 0}  //8  - 1
                                                  }, {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //8. - 16
-                                                   {0, 0, 1, 0, 0, 0, 0, 0}, //8. - 8
+                                                   {0, 0, 0, 0, 0, 0, 0, 0}, //8. - 8
                                                    {1, 1, 0, 1, 0, 0, 0, 0}, //8. - 8.
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //8. - 4
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //8. - 4.
@@ -272,36 +272,36 @@ class Markov {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}  //8. - 1
                                                  }, {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4  - 16
-                                                   {0, 2, 0, 8, 1, 0, 1, 1}, //4  - 8
+                                                   {0, 2, 0, 8, 1, 0, 0, 0}, //4  - 8
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4  - 8.
-                                                   {1, 3, 0, 3, 1, 1, 1, 1}, //4  - 4
+                                                   {1, 3, 0, 3, 1, 0, 0, 0}, //4  - 4
                                                    {0, 0, 0, 1, 1, 0, 0, 0}, //4  - 4.
                                                    {0, 1, 0, 2, 0, 0, 0, 0}, //4  - 2
-                                                   {0, 1, 0, 2, 0, 0, 1, 1}, //4  - 2.
+                                                   {0, 1, 0, 2, 0, 0, 0, 0}, //4  - 2.
                                                    {0, 1, 0, 1, 0, 0, 0, 0}  //4  - 1
                                                  }, {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4. - 16
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4. - 8
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4. - 8.
                                                    {0, 1, 0, 0, 1, 0, 0, 0}, //4. - 4
-                                                   {0, 0, 0, 1, 0, 0, 1, 0}, //4. - 4.
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //4. - 4.
                                                    {0, 1, 0, 0, 1, 0, 0, 0}, //4. - 2
                                                    {0, 0, 0, 1, 1, 1, 0, 0}, //4. - 2.
                                                    {0, 0, 0, 1, 0, 0, 0, 0}  //4. - 1
                                                  }, {
-                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 16
-                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 8
+                                                   {1, 2, 0, 1, 0, 0, 0, 0}, //2  - 16
+                                                   {1, 2, 0, 1, 0, 0, 0, 0}, //2  - 8
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 8.
                                                    {1, 1, 0, 1, 0, 2, 0, 0}, //2  - 4
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 4.
-                                                   {0, 1, 0, 1, 1, 1, 1, 0}, //2  - 2
+                                                   {0, 1, 0, 1, 0, 0, 0, 0}, //2  - 2
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 2.
                                                    {0, 0, 0, 1, 0, 0, 0, 0}  //2  - 1
                                                  }, {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2. - 16
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2. - 8
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2. - 8.
-                                                   {0, 1, 0, 1, 0, 0, 1, 0}, //2. - 4
+                                                   {0, 1, 0, 1, 0, 0, 0, 0}, //2. - 4
                                                    {1, 0, 0, 1, 0, 0, 0, 0}, //2. - 4.
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2. - 2
                                                    {0, 1, 0, 2, 1, 0, 0, 0}, //2. - 2.
@@ -310,7 +310,7 @@ class Markov {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //1  - 16
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //1  - 8
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //1  - 8.
-                                                   {0, 1, 0, 3, 0, 0, 1, 0}, //1  - 4
+                                                   {0, 1, 0, 3, 0, 0, 0, 0}, //1  - 4
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //1  - 4.
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //1  - 2
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //1  - 2.
@@ -673,8 +673,8 @@ class Markov {
   }
   
   void lerpNotes(float f) {
+    secondOrderDistributions = new EnumeratedIntegerDistribution[8][8];
     if(f < 0.5) {
-      secondOrderDistributions = new EnumeratedIntegerDistribution[8][8];
       for(int i = 0; i < 8; i++) {
         for(int j = 0; j < 8; j++) {
           double[] lerpedRow = lerpRow(secondOrderProbabilities[i][j], secondOrderProbabilitiesLerpMiddle[i][j], f);
@@ -682,7 +682,6 @@ class Markov {
         }
       }
     } else {
-      secondOrderDistributions = new EnumeratedIntegerDistribution[8][8];
       for(int i = 0; i < 8; i++) {
         for(int j = 0; j < 8; j++) {
           double[] lerpedRow = lerpRow(secondOrderProbabilitiesLerpMiddle[i][j], secondOrderProbabilitiesLerpTarget[i][j], f);
@@ -694,10 +693,19 @@ class Markov {
   
   void lerpValues(float f) {
     rhythmDistributions = new EnumeratedIntegerDistribution[8][8];
-    for(int i = 0; i < 8; i++) {
-      for(int j = 0; j < 8; j++) {
-        double[] lerpedRow = lerpRow(secondOrderValueProbabilities[i][j], secondOrderValueProbabilitiesLerpTarget[i][j], f);
-        rhythmDistributions[i][j] = new EnumeratedIntegerDistribution(rhythmStates, lerpedRow);
+    if(f < 0.5) {
+      for(int i = 0; i < 8; i++) {
+        for(int j = 0; j < 8; j++) {
+          double[] lerpedRow = lerpRow(secondOrderValueProbabilities[i][j], secondOrderValueProbabilitiesLerpMiddle[i][j], f);
+          rhythmDistributions[i][j] = new EnumeratedIntegerDistribution(rhythmStates, lerpedRow);
+        }
+      }
+    } else {
+      for(int i = 0; i < 8; i++) {
+        for(int j = 0; j < 8; j++) {
+          double[] lerpedRow = lerpRow(secondOrderValueProbabilitiesLerpMiddle[i][j], secondOrderValueProbabilitiesLerpTarget[i][j], f);
+          rhythmDistributions[i][j] = new EnumeratedIntegerDistribution(rhythmStates, lerpedRow);
+        }
       }
     }
   }
