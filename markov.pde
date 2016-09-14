@@ -648,7 +648,6 @@ class Markov {
     return m;
   }
   
-  // TODO fix this
   int getNextLegato() {
     int l = legatoDistributions[legato][previousLegato].sample();
     previousLegato = legato;
@@ -674,11 +673,21 @@ class Markov {
   }
   
   void lerpNotes(float f) {
-    secondOrderDistributions = new EnumeratedIntegerDistribution[8][8];
-    for(int i = 0; i < 8; i++) {
-      for(int j = 0; j < 8; j++) {
-        double[] lerpedRow = lerpRow(secondOrderProbabilities[i][j], secondOrderProbabilitiesLerpTarget[i][j], f);
-        secondOrderDistributions[i][j] = new EnumeratedIntegerDistribution(secOrdStates, lerpedRow);
+    if(f < 0.5) {
+      secondOrderDistributions = new EnumeratedIntegerDistribution[8][8];
+      for(int i = 0; i < 8; i++) {
+        for(int j = 0; j < 8; j++) {
+          double[] lerpedRow = lerpRow(secondOrderProbabilities[i][j], secondOrderProbabilitiesLerpMiddle[i][j], f);
+          secondOrderDistributions[i][j] = new EnumeratedIntegerDistribution(secOrdStates, lerpedRow);
+        }
+      }
+    } else {
+      secondOrderDistributions = new EnumeratedIntegerDistribution[8][8];
+      for(int i = 0; i < 8; i++) {
+        for(int j = 0; j < 8; j++) {
+          double[] lerpedRow = lerpRow(secondOrderProbabilitiesLerpMiddle[i][j], secondOrderProbabilitiesLerpTarget[i][j], f);
+          secondOrderDistributions[i][j] = new EnumeratedIntegerDistribution(secOrdStates, lerpedRow);
+        }
       }
     }
   }
