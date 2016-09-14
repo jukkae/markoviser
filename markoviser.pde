@@ -8,6 +8,7 @@ OscP5 oscP5;
 NetAddress puredata;
 
 Markov markov;
+Markov rhythmM;
 
 void setup() {
   size(320, 240);
@@ -16,6 +17,7 @@ void setup() {
   
   puredata = new NetAddress("127.0.0.1", 12001); 
   markov = new Markov();
+  rhythmM = new Markov();
 }
 
 void draw() {
