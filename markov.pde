@@ -1,9 +1,4 @@
-enum Order {
-  FIRST, SECOND;
-}
-
 class Markov {
-  Order order = Order.SECOND;
   int state = 0;
   int previousState = 0;
   int value = 4;
@@ -13,28 +8,11 @@ class Markov {
   int legato = 0;
   int previousLegato = 0;
   
-  //TODO proper matrix implementation
-  int[] states = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
   int[] secOrdStates = {0, 2, 3, 5, 7, 8, 10, 12};
   int[] mutingStates = {0, 1, 2};
   int[] rhythmStates = {1, 2, 3, 4, 6, 8, 12, 16};
   int[] legatoStates = {0, 1};
-  
-  double[][] firstOrderProbabilities = {//A  Bb B  C  Db D  Eb E  F  Gb G  Ab
-                                         {1, 3, 2, 3, 0, 0, 0, 3, 0, 0, 0, 0}, //A
-                                         {1, 3, 0, 0, 4, 0, 0, 0, 3, 0, 0, 0}, //Bb
-                                         {1, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0}, //B
-                                         {1, 0, 2, 0, 0, 0, 0, 3, 0, 0, 0, 0}, //C
-                                         {1, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0}, //Db
-                                         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //D
-                                         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Eb
-                                         {1, 0, 0, 3, 0, 0, 0, 1, 5, 0, 0, 0}, //E
-                                         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0}, //F
-                                         {1, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0}, //Gb
-                                         {1, 0, 0, 0, 0, 5, 0, 0, 0, 4, 0, 0}, //G
-                                         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}  //Ab
-                                       };
-                             
+                               
   double[][][] secondOrderProbabilitiesLerpTarget = {
                                             {//A  B  C  D  E  F  G  a  cur  last
                                               {3, 4, 3, 0, 2, 0, 0, 1}, //A <- A
@@ -110,6 +88,82 @@ class Markov {
                                               {2, 0, 0, 0, 1, 0, 1, 2}  //a <- a
                                             }
                                           };
+                                          
+  double[][][] secondOrderProbabilitiesLerpMiddle = {
+                                            {//A  B  C  D  E  F  G  a  cur  last
+                                              {3, 4, 3, 0, 2, 0, 0, 1}, //A <- A
+                                              {1, 0, 1, 0, 1, 0, 0, 0}, //A <- B
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //A <- C
+                                              {5, 0, 0, 3, 0, 2, 0, 0}, //A <- D
+                                              {5, 0, 0, 0, 2, 1, 0, 0}, //A <- E
+                                              {1, 0, 0, 0, 1, 0, 0, 0}, //A <- F
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //A <- G
+                                              {1, 0, 0, 0, 0, 0, 0, 0}  //A <- a
+                                            }, {
+                                              {0, 1, 2, 0, 0, 0, 0, 0}, //B <- A
+                                              {0, 0, 1, 0, 0, 0, 0, 0}, //B <- B
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //B <- C
+                                              {0, 0, 1, 0, 0, 0, 0, 0}, //B <- D
+                                              {0, 0, 1, 0, 0, 0, 0, 0}, //B <- E
+                                              {0, 0, 1, 0, 0, 0, 0, 0}, //B <- F
+                                              {0, 0, 1, 0, 0, 0, 0, 0}, //B <- G
+                                              {0, 0, 1, 0, 0, 0, 0, 0}  //B <- a
+                                            }, {  
+                                              {1, 0, 0, 2, 0, 0, 0, 0}, //C <- A  
+                                              {1, 0, 1, 2, 0, 0, 0, 0}, //C <- B
+                                              {1, 0, 1, 0, 0, 0, 0, 0}, //C <- C
+                                              {2, 1, 0, 0, 1, 0, 0, 0}, //C <- D
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //C <- E
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //C <- F
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //C <- G
+                                              {1, 0, 0, 0, 0, 0, 0, 0}  //C <- a
+                                            }, {
+                                              {1, 0, 0, 0, 0, 1, 0, 0}, //D <- A
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //D <- B
+                                              {0, 0, 1, 1, 3, 0, 0, 0}, //D <- C
+                                              {2, 0, 2, 1, 0, 1, 0, 0}, //D <- D
+                                              {0, 0, 1, 0, 1, 0, 0, 0}, //D <- E
+                                              {1, 0, 0, 1, 0, 1, 0, 0}, //D <- F
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //D <- G
+                                              {1, 0, 0, 0, 0, 0, 0, 0}  //D <- a
+                                            }, {
+                                              {1, 0, 0, 0, 1, 1, 0, 1}, //E <- A
+                                              {1, 0, 0, 0, 1, 1, 1, 0}, //E <- B
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //E <- C
+                                              {0, 0, 0, 2, 0, 1, 0, 0}, //E <- D
+                                              {2, 0, 0, 2, 0, 1, 0, 0}, //E <- E
+                                              {2, 0, 1, 0, 0, 4, 0, 0}, //E <- F
+                                              {1, 0, 0, 0, 0, 1, 1, 0}, //E <- G
+                                              {1, 0, 0, 0, 0, 0, 0, 0}  //E <- a
+                                            }, {
+                                              {0, 0, 0, 0, 1, 0, 0, 0}, //F <- A
+                                              {0, 0, 0, 0, 1, 0, 0, 0}, //F <- B
+                                              {0, 0, 1, 0, 0, 0, 0, 0}, //F <- C
+                                              {1, 0, 0, 1, 0, 0, 0, 0}, //F <- D
+                                              {0, 0, 0, 0, 1, 1, 1, 0}, //F <- E
+                                              {0, 0, 0, 1, 1, 0, 1, 0}, //F <- F
+                                              {0, 0, 0, 0, 3, 0, 2, 0}, //F <- G
+                                              {1, 0, 0, 0, 0, 0, 0, 0}  //F <- a
+                                            }, {
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //G <- A
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //G <- B
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //G <- C
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //G <- D
+                                              {0, 0, 0, 0, 1, 1, 1, 0}, //G <- E
+                                              {0, 0, 0, 0, 1, 1, 0, 1}, //G <- F
+                                              {0, 0, 0, 0, 0, 1, 0, 0}, //G <- G
+                                              {1, 0, 0, 0, 0, 1, 1, 0}  //G <- a
+                                            }, {
+                                              {1, 0, 0, 0, 1, 0, 0, 1}, //a <- A
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //a <- B
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //a <- C
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //a <- D
+                                              {1, 0, 1, 0, 1, 0, 0, 0}, //a <- E
+                                              {1, 0, 0, 0, 0, 0, 0, 0}, //a <- F
+                                              {0, 0, 0, 0, 0, 0, 1, 1}, //a <- G
+                                              {2, 0, 0, 0, 1, 0, 1, 2}  //a <- a
+                                            }
+                                          };                                          
 
   double[][][] secondOrderProbabilities = {
                                             {//A  B  C  D  E  F  G  a  cur  last
@@ -189,6 +243,82 @@ class Markov {
   
   //TODO remove 8.!
   double[][][] secondOrderValueProbabilitiesLerpTarget = {
+                                                 {//16 8  8. 4  4. 2  2. 1     cur  last
+                                                   {0, 1, 0, 0, 0, 0, 0, 0}, //16 - 16
+                                                   {1, 0, 0, 0, 0, 0, 0, 0}, //16 - 8
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //16 - 8.
+                                                   {1, 0, 0, 0, 0, 0, 0, 0}, //16 - 4
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //16 - 4.
+                                                   {1, 0, 1, 0, 0, 0, 0, 0}, //16 - 2
+                                                   {1, 0, 1, 0, 0, 0, 0, 0}, //16 - 2.
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}  //16 - 1
+                                                 }, {
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 16
+                                                   {1, 6, 0, 2, 0, 1, 0, 1}, //8  - 8
+                                                   {0, 0, 1, 3, 0, 0, 1, 0}, //8  - 8.
+                                                   {1, 3, 0, 0, 0, 0, 0, 0}, //8  - 4
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 4.
+                                                   {1, 1, 0, 0, 0, 0, 0, 0}, //8  - 2
+                                                   {0, 1, 0, 0, 0, 0, 0, 0}, //8  - 2.
+                                                   {0, 1, 0, 0, 0, 0, 0, 0}  //8  - 1
+                                                 }, {
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //8. - 16
+                                                   {0, 0, 1, 0, 0, 0, 0, 0}, //8. - 8
+                                                   {1, 1, 0, 1, 0, 0, 0, 0}, //8. - 8.
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //8. - 4
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //8. - 4.
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //8. - 2
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //8. - 2.
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}  //8. - 1
+                                                 }, {
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //4  - 16
+                                                   {0, 2, 0, 8, 1, 0, 1, 1}, //4  - 8
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //4  - 8.
+                                                   {1, 3, 0, 3, 1, 1, 1, 1}, //4  - 4
+                                                   {0, 0, 0, 1, 1, 0, 0, 0}, //4  - 4.
+                                                   {0, 1, 0, 2, 0, 0, 0, 0}, //4  - 2
+                                                   {0, 1, 0, 2, 0, 0, 1, 1}, //4  - 2.
+                                                   {0, 1, 0, 1, 0, 0, 0, 0}  //4  - 1
+                                                 }, {
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //4. - 16
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //4. - 8
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //4. - 8.
+                                                   {0, 1, 0, 0, 1, 0, 0, 0}, //4. - 4
+                                                   {0, 0, 0, 1, 0, 0, 1, 0}, //4. - 4.
+                                                   {0, 1, 0, 0, 1, 0, 0, 0}, //4. - 2
+                                                   {0, 0, 0, 1, 1, 1, 0, 0}, //4. - 2.
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}  //4. - 1
+                                                 }, {
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 16
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 8
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 8.
+                                                   {1, 1, 0, 1, 0, 2, 0, 0}, //2  - 4
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 4.
+                                                   {0, 1, 0, 1, 1, 1, 1, 0}, //2  - 2
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 2.
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}  //2  - 1
+                                                 }, {
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //2. - 16
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //2. - 8
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //2. - 8.
+                                                   {0, 1, 0, 1, 0, 0, 1, 0}, //2. - 4
+                                                   {1, 0, 0, 1, 0, 0, 0, 0}, //2. - 4.
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //2. - 2
+                                                   {0, 1, 0, 2, 1, 0, 0, 0}, //2. - 2.
+                                                   {1, 0, 0, 1, 0, 0, 0, 0}  //2. - 1
+                                                 }, {
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //1  - 16
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //1  - 8
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //1  - 8.
+                                                   {0, 1, 0, 3, 0, 0, 1, 0}, //1  - 4
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //1  - 4.
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //1  - 2
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //1  - 2.
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}  //1  - 1
+                                                 }
+                                               };
+
+  double[][][] secondOrderValueProbabilitiesLerpMiddle = {
                                                  {//16 8  8. 4  4. 2  2. 1     cur  last
                                                    {0, 1, 0, 0, 0, 0, 0, 0}, //16 - 16
                                                    {1, 0, 0, 0, 0, 0, 0, 0}, //16 - 8
@@ -393,27 +523,18 @@ class Markov {
                                      };                                     
                                                 
   
-  EnumeratedIntegerDistribution[]   firstOrderDistributions; 
   EnumeratedIntegerDistribution[][] secondOrderDistributions;
   EnumeratedIntegerDistribution[][] rhythmDistributions;
   EnumeratedIntegerDistribution[][] mutingDistributions;
   EnumeratedIntegerDistribution[][] legatoDistributions;
   
   Markov() {
-    initFirstOrderDistributions();
     initSecondOrderDistributions();
     initRhythmDistributions();
     initMutingDistributions();
     initLegatoDistributions();
   }
-  
-  void initFirstOrderDistributions() {
-    firstOrderDistributions = new EnumeratedIntegerDistribution[12];
-    for(int i = 0; i < firstOrderDistributions.length; i++) {
-      firstOrderDistributions[i] = new EnumeratedIntegerDistribution(states, firstOrderProbabilities[i]);
-    }
-  }
-  
+    
   void initSecondOrderDistributions() {
     secondOrderDistributions = new EnumeratedIntegerDistribution[8][8];
     for(int i = 0; i < 8; i++) {
@@ -456,23 +577,8 @@ class Markov {
   }
   
   int getNextNote() {
-    switch (order) {
-      case FIRST:
-        return getNextFirstOrderNote();
-      case SECOND:
-        return getNextSecondOrderNote();
-      default:
-        return state;
-    }
-    
-  }
-  
-  private int getNextFirstOrderNote() {
-    previousState = state;
-    int s = firstOrderDistributions[state].sample();
-    state = s;
-    return s;
-  }
+      return getNextSecondOrderNote();
+  }  
   
   //TODO ughh
   private int getNextSecondOrderNote() {
@@ -609,7 +715,6 @@ class Markov {
   }
     
   double[] lerpRow(double[] initial, double[] target, float lerp) {
-    //lerp = lerp/100; // TODO lerp comes in as 0-99 currently
     double[] lerped = new double[initial.length];
     for(int i = 0; i < initial.length; i++) {
       lerped[i] = initial[i] + lerp*(target[i]-initial[i]);
