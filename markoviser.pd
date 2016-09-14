@@ -397,12 +397,12 @@
 #X obj 221 -20 random 150;
 #X floatatom 259 27 5 0 0 0 - - -;
 #X obj 238 62 print;
-#X connect 0 0 18 0;
 #X connect 0 0 26 0;
 #X connect 0 0 53 0;
-#X connect 0 0 55 0;
 #X connect 0 0 62 0;
-#X connect 0 0 94 0;
+#X connect 0 0 18 0;
+#X connect 0 0 55 0;
+#X connect 0 0 78 1;
 #X connect 2 0 3 0;
 #X connect 3 0 38 0;
 #X connect 4 0 72 1;
