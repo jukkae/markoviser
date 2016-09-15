@@ -93,10 +93,10 @@ class Markov {
                                             {//A  B  C  D  E  F  G  a  cur  last
                                               {3, 4, 3, 0, 2, 0, 0, 0}, //A <- A
                                               {1, 0, 1, 0, 1, 0, 0, 0}, //A <- B
-                                              {1, 0, 0, 0, 0, 0, 0, 0}, //A <- C
+                                              {1, 1, 0, 0, 0, 0, 0, 0}, //A <- C
                                               {5, 0, 0, 3, 0, 2, 0, 0}, //A <- D
                                               {5, 0, 0, 0, 2, 1, 0, 0}, //A <- E
-                                              {1, 0, 0, 0, 1, 0, 0, 0}, //A <- F
+                                              {1, 1, 0, 0, 1, 0, 0, 0}, //A <- F
                                               {1, 0, 0, 0, 0, 0, 0, 0}, //A <- G
                                               {1, 0, 0, 0, 0, 0, 0, 0}  //A <- a
                                             }, {
@@ -118,7 +118,7 @@ class Markov {
                                               {1, 0, 0, 0, 0, 0, 0, 0}, //C <- G
                                               {1, 0, 0, 0, 0, 0, 0, 0}  //C <- a
                                             }, {
-                                              {1, 0, 0, 0, 0, 1, 0, 0}, //D <- A
+                                              {1, 0, 0, 1, 0, 1, 0, 0}, //D <- A
                                               {1, 0, 0, 0, 0, 0, 0, 0}, //D <- B
                                               {0, 0, 1, 1, 3, 0, 0, 0}, //D <- C
                                               {2, 0, 2, 1, 0, 1, 0, 0}, //D <- D
@@ -128,7 +128,7 @@ class Markov {
                                               {1, 0, 0, 0, 0, 0, 0, 0}  //D <- a
                                             }, {
                                               {1, 0, 0, 0, 1, 1, 0, 0}, //E <- A
-                                              {1, 0, 0, 0, 1, 1, 1, 0}, //E <- B
+                                              {1, 0, 0, 0, 1, 1, 0, 0}, //E <- B
                                               {1, 0, 0, 0, 0, 0, 0, 0}, //E <- C
                                               {0, 0, 0, 2, 0, 1, 0, 0}, //E <- D
                                               {2, 0, 0, 2, 0, 1, 0, 0}, //E <- E
@@ -149,10 +149,10 @@ class Markov {
                                               {1, 0, 0, 0, 0, 0, 0, 0}, //G <- B
                                               {1, 0, 0, 0, 0, 0, 0, 0}, //G <- C
                                               {1, 0, 0, 0, 0, 0, 0, 0}, //G <- D
-                                              {0, 0, 0, 0, 1, 1, 1, 0}, //G <- E
+                                              {0, 0, 0, 0, 1, 1, 0, 0}, //G <- E
                                               {0, 0, 0, 0, 1, 1, 0, 0}, //G <- F
                                               {0, 0, 0, 0, 0, 1, 0, 0}, //G <- G
-                                              {1, 0, 0, 0, 0, 1, 1, 0}  //G <- a
+                                              {1, 0, 0, 0, 0, 1, 0, 0}  //G <- a
                                             }, {
                                               {1, 0, 0, 0, 1, 0, 0, 0}, //a <- A
                                               {1, 0, 0, 0, 0, 0, 0, 0}, //a <- B
@@ -167,7 +167,7 @@ class Markov {
 
   double[][][] secondOrderProbabilities = {
                                             {//A  B  C  D  E  F  G  a  cur  last
-                                              {2, 0, 2, 0, 1, 0, 0, 0}, //A <- A
+                                              {4, 0, 4, 0, 2, 0, 1, 0}, //A <- A
                                               {1, 0, 0, 0, 0, 0, 0, 0}, //A <- B
                                               {2, 0, 1, 0, 1, 0, 0, 0}, //A <- C
                                               {1, 0, 0, 0, 0, 0, 0, 0}, //A <- D
@@ -221,7 +221,7 @@ class Markov {
                                               {1, 0, 0, 0, 0, 0, 0, 0}, //F <- G
                                               {1, 0, 0, 0, 0, 0, 0, 0}  //F <- a
                                             }, {
-                                              {0, 0, 0, 0, 1, 0, 0, 0}, //G <- A
+                                              {0, 0, 0, 0, 1, 0, 1, 0}, //G <- A
                                               {0, 0, 0, 0, 1, 0, 0, 0}, //G <- B
                                               {0, 0, 0, 0, 1, 0, 0, 0}, //G <- C
                                               {0, 0, 0, 1, 1, 0, 0, 0}, //G <- D
@@ -685,14 +685,14 @@ class Markov {
     if(f < 0.5) {
       for(int i = 0; i < 8; i++) {
         for(int j = 0; j < 8; j++) {
-          double[] lerpedRow = lerpRow(secondOrderProbabilities[i][j], secondOrderProbabilitiesLerpMiddle[i][j], f);
+          double[] lerpedRow = lerpRow(secondOrderProbabilities[i][j], secondOrderProbabilitiesLerpMiddle[i][j], (f*2));
           secondOrderDistributions[i][j] = new EnumeratedIntegerDistribution(secOrdStates, lerpedRow);
         }
       }
     } else {
       for(int i = 0; i < 8; i++) {
         for(int j = 0; j < 8; j++) {
-          double[] lerpedRow = lerpRow(secondOrderProbabilitiesLerpMiddle[i][j], secondOrderProbabilitiesLerpTarget[i][j], f);
+          double[] lerpedRow = lerpRow(secondOrderProbabilitiesLerpMiddle[i][j], secondOrderProbabilitiesLerpTarget[i][j], ((f-0.5)*2));
           secondOrderDistributions[i][j] = new EnumeratedIntegerDistribution(secOrdStates, lerpedRow);
         }
       }
@@ -703,14 +703,14 @@ class Markov {
     if(f < 0.5) {
       for(int i = 0; i < 8; i++) {
         for(int j = 0; j < 8; j++) {
-          double[] lerpedRow = lerpRow(secondOrderValueProbabilities[i][j], secondOrderValueProbabilitiesLerpMiddle[i][j], f);
+          double[] lerpedRow = lerpRow(secondOrderValueProbabilities[i][j], secondOrderValueProbabilitiesLerpMiddle[i][j], (f*2));
           rhythmDistributions[i][j] = new EnumeratedIntegerDistribution(rhythmStates, lerpedRow);
         }
       }
     } else {
       for(int i = 0; i < 8; i++) {
         for(int j = 0; j < 8; j++) {
-          double[] lerpedRow = lerpRow(secondOrderValueProbabilitiesLerpMiddle[i][j], secondOrderValueProbabilitiesLerpTarget[i][j], f);
+          double[] lerpedRow = lerpRow(secondOrderValueProbabilitiesLerpMiddle[i][j], secondOrderValueProbabilitiesLerpTarget[i][j], (f-0.5)*2);
           rhythmDistributions[i][j] = new EnumeratedIntegerDistribution(rhythmStates, lerpedRow);
         }
       }
@@ -721,14 +721,14 @@ class Markov {
     if(f < 0.5) {
       for(int i = 0; i < 2; i++) {
         for(int j = 0; j < 2; j++) {
-          double[] lerpedRow = lerpRow(legatoProbabilities[i][j], legatoProbabilitiesLerpMiddle[i][j], f);
+          double[] lerpedRow = lerpRow(legatoProbabilities[i][j], legatoProbabilitiesLerpMiddle[i][j], (f*2));
           legatoDistributions[i][j] = new EnumeratedIntegerDistribution(legatoStates, lerpedRow);
         }
       }
     } else {
       for(int i = 0; i < 2; i++) {
         for(int j = 0; j < 2; j++) {
-          double[] lerpedRow = lerpRow(legatoProbabilitiesLerpMiddle[i][j], legatoProbabilitiesLerpTarget[i][j], f);
+          double[] lerpedRow = lerpRow(legatoProbabilitiesLerpMiddle[i][j], legatoProbabilitiesLerpTarget[i][j], (f-0.5)*2);
           legatoDistributions[i][j] = new EnumeratedIntegerDistribution(legatoStates, lerpedRow);
         }
       }
