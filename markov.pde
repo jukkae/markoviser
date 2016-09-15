@@ -406,12 +406,12 @@ class Markov {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}  //16 - 1
                                                  }, {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 16
-                                                   {0, 1, 0, 1, 0, 0, 0, 0}, //8  - 8
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 8
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 8.
-                                                   {0, 1, 0, 1, 0, 0, 0, 0}, //8  - 4
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 4
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 4.
-                                                   {0, 1, 0, 0, 0, 0, 0, 0}, //8  - 2
-                                                   {0, 1, 0, 1, 0, 0, 0, 0}, //8  - 2.
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 2
+                                                   {0, 0, 0, 1, 0, 0, 0, 0}, //8  - 2.
                                                    {0, 0, 0, 1, 0, 0, 0, 0}  //8  - 1
                                                  }, {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //8. - 16
@@ -426,7 +426,7 @@ class Markov {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4  - 16
                                                    {0, 0, 0, 1, 0, 0, 1, 0}, //4  - 8
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4  - 8.
-                                                   {0, 1, 0, 2, 1, 1, 2, 2}, //4  - 4
+                                                   {0, 0, 0, 2, 1, 1, 2, 2}, //4  - 4
                                                    {0, 0, 0, 1, 1, 0, 0, 0}, //4  - 4.
                                                    {0, 0, 0, 1, 1, 0, 1, 0}, //4  - 2
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4  - 2.
@@ -438,13 +438,13 @@ class Markov {
                                                    {0, 0, 0, 1, 1, 0, 0, 0}, //4. - 4
                                                    {0, 0, 0, 1, 1, 0, 0, 0}, //4. - 4.
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //4. - 2
-                                                   {0, 0, 0, 1, 1, 0, 0, 0}, //4. - 2.
+                                                   {0, 0, 0, 1, 1, 1, 0, 0}, //4. - 2.
                                                    {0, 0, 0, 1, 0, 0, 0, 0}  //4. - 1
                                                  }, {
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 16
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 8
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 8.
-                                                   {0, 1, 0, 1, 0, 1, 0, 0}, //2  - 4
+                                                   {0, 0, 0, 1, 0, 1, 0, 1}, //2  - 4
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 4.
                                                    {0, 0, 0, 1, 0, 1, 0, 0}, //2  - 2
                                                    {0, 0, 0, 1, 0, 0, 0, 0}, //2  - 2.
@@ -504,20 +504,30 @@ class Markov {
                                      
   double[][][] legatoProbabilities = {
                                        {
-                                         {5, 1},
+                                         {8, 1},
                                          {1, 0}
                                        }, {
                                          {1, 0},
                                          {1, 0}
                                        }
                                      };
+
+  double[][][] legatoProbabilitiesLerpMiddle = {
+                                       {
+                                         {6, 1},
+                                         {3, 1}
+                                       }, {
+                                         {1, 0},
+                                         {1, 0}
+                                       }
+                                     };                                     
                                      
   double[][][] legatoProbabilitiesLerpTarget = {
                                        {
                                          {2, 1},
-                                         {3, 1}
+                                         {4, 1}
                                        }, {
-                                         {1, 0},
+                                         {1, 1},
                                          {1, 0}
                                        }
                                      };                                     
@@ -712,10 +722,19 @@ class Markov {
   
   void lerpLegato(float f) {
     legatoDistributions = new EnumeratedIntegerDistribution[2][2];
-    for(int i = 0; i < 2; i++) {
-      for(int j = 0; j < 2; j++) {
-        double[] lerpedRow = lerpRow(legatoProbabilities[i][j], legatoProbabilitiesLerpTarget[i][j], f);
-        legatoDistributions[i][j] = new EnumeratedIntegerDistribution(legatoStates, lerpedRow);
+    if(f < 0.5) {
+      for(int i = 0; i < 2; i++) {
+        for(int j = 0; j < 2; j++) {
+          double[] lerpedRow = lerpRow(legatoProbabilities[i][j], legatoProbabilitiesLerpMiddle[i][j], f);
+          legatoDistributions[i][j] = new EnumeratedIntegerDistribution(legatoStates, lerpedRow);
+        }
+      }
+    } else {
+      for(int i = 0; i < 2; i++) {
+        for(int j = 0; j < 2; j++) {
+          double[] lerpedRow = lerpRow(legatoProbabilitiesLerpMiddle[i][j], legatoProbabilitiesLerpTarget[i][j], f);
+          legatoDistributions[i][j] = new EnumeratedIntegerDistribution(legatoStates, lerpedRow);
+        }
       }
     }
   }
