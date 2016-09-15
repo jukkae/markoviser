@@ -673,7 +673,6 @@ class Markov {
   }
   
   void lerpMuting(float f) {
-    mutingDistributions = new EnumeratedIntegerDistribution[3][3];
     for(int i = 0; i < 3; i++) { // TODO yeah i know these should be dynamic
       for(int j = 0; j < 3; j++) { // well sue me
         double[] lerpedRow = lerpRow(mutingProbabilities[i][j], mutingProbabilitiesLerpTarget[i][j], f);
@@ -683,7 +682,6 @@ class Markov {
   }
   
   void lerpNotes(float f) {
-    secondOrderDistributions = new EnumeratedIntegerDistribution[8][8];
     if(f < 0.5) {
       for(int i = 0; i < 8; i++) {
         for(int j = 0; j < 8; j++) {
@@ -702,7 +700,6 @@ class Markov {
   }
   
   void lerpValues(float f) {
-    rhythmDistributions = new EnumeratedIntegerDistribution[8][8];
     if(f < 0.5) {
       for(int i = 0; i < 8; i++) {
         for(int j = 0; j < 8; j++) {
@@ -721,7 +718,6 @@ class Markov {
   }
   
   void lerpLegato(float f) {
-    legatoDistributions = new EnumeratedIntegerDistribution[2][2];
     if(f < 0.5) {
       for(int i = 0; i < 2; i++) {
         for(int j = 0; j < 2; j++) {
