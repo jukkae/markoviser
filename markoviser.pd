@@ -49,7 +49,7 @@
 -1 -1;
 #X obj 295 -66 spigot;
 #X obj 295 -89 tgl 15 0 empty empty autoends 17 7 0 10 -262144 -1 -1
-1 1;
+0 1;
 #X obj 716 -49 select 109;
 #X msg 668 189 sendtyped /test s getnextmute;
 #X obj 1043 322 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
@@ -742,10 +742,10 @@ the ground \, if you want to avoid flickering of the values !;
 #X text 749 -30 m;
 #X obj 1036 399 spigot;
 #X obj 1080 378 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1
-1 1;
+0 1;
 #X obj 1186 392 spigot;
 #X obj 1230 371 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1
-1 1;
+0 1;
 #X obj 58 287 select 0 1 2 3 4 5 6 7 8 9 10 11 12;
 #X msg 391 358 57;
 #X msg 328 358 55;
@@ -778,6 +778,8 @@ the ground \, if you want to avoid flickering of the values !;
 #X text 875 -21 phrase length: read from accelerometer;
 #X floatatom 821 69 5 0 0 0 - - -;
 #X text 104 186 2nd outlet: value -> stop after empty ticks;
+#X obj 169 -24 loadbang;
+#X obj 245 -24 delay 100;
 #X connect 1 0 103 0;
 #X connect 2 0 1 0;
 #X connect 3 0 5 0;
@@ -924,3 +926,6 @@ the ground \, if you want to avoid flickering of the values !;
 #X connect 122 0 118 2;
 #X connect 123 0 118 0;
 #X connect 125 0 120 0;
+#X connect 127 0 3 0;
+#X connect 127 0 128 0;
+#X connect 128 0 29 0;
