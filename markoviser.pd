@@ -27,7 +27,7 @@
 #X obj 523 464 *~;
 #X obj 486 464 *~;
 #X msg 521 336 dry 0.7;
-#X obj 547 -15 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 547 -15 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 499 68 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
@@ -940,5 +940,7 @@ the ground \, if you want to avoid flickering of the values !;
 #X connect 131 0 132 1;
 #X connect 132 0 27 0;
 #X connect 133 0 134 0;
+#X connect 133 0 58 0;
 #X connect 134 0 135 0;
+#X connect 134 0 51 0;
 #X connect 136 0 117 0;
